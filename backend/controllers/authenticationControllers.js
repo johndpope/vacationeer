@@ -1,6 +1,6 @@
 const signup = (req, res) => {
 	res.json({
-		data: 'you hit it bro hehe'
+		data: 'you hit it bro hehelol'
 	})
 }
 
