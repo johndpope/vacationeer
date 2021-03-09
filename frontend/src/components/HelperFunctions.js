@@ -58,3 +58,13 @@ export const signOut = (callback) => {
 	removeFromLocalStorage('user')
 	callback()
 }
+
+export const updateUserInfo = (resp, callback) => {
+	if (typeof window !== 'undefined') {
+		let authentication = JSON.parse(localStorage.getItem('user'))
+		authentication = resp.data
+		localStorage.setItem('user', JSON.stringify(authentication))
+	}
+
+	callback()
+}

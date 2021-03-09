@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import { authenticate, isAuthenticated } from '../components/HelperFunctions'
 import { ToastContainer, toast } from 'react-toastify'
@@ -12,9 +12,8 @@ const initialState = {
 	buttonText: 'Submit'
 }
 
-const SignInPage = () => {
+const SignInPage = ({ history }) => {
 	const [ userInfo, setUserInfo ] = useState(initialState)
-
 	const { email, password, buttonText } = userInfo
 
 	const handleChange = (name) => (e) => {
@@ -34,7 +33,7 @@ const SignInPage = () => {
 
 				authenticate(resp, () => {
 					setUserInfo({ ...userInfo, name: '', email: '', password: '', buttonText: 'Submitted' })
-					toast.success(`Hey ${resp.data.user.name}, Welcome back!`)
+					isAuthenticated() && isAuthenticated().role === 'admin' ? history.push('/admin') : history.push('/private')
 				})
 			})
 			.catch((err) => {

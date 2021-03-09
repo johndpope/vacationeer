@@ -36,9 +36,21 @@ const BluePrint = ({ children, match }) => {
 				</Fragment>
 			)}
 
-			{isAuthenticated() && (
+			{isAuthenticated() &&
+			isAuthenticated().role === 'admin' && (
 				<li className='nav-item'>
-					<span className='nav-link'>{isAuthenticated().name}</span>
+					<Link to='/admin' className='nav-link' style={activeTab('/admin')}>
+						{isAuthenticated().name}
+					</Link>
+				</li>
+			)}
+
+			{isAuthenticated() &&
+			isAuthenticated().role === 'customer' && (
+				<li className='nav-item'>
+					<Link to='/private' className='nav-link' style={activeTab('/private')}>
+						{isAuthenticated().name}
+					</Link>
 				</li>
 			)}
 
