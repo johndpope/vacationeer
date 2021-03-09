@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail')
 const expressJwt = require('express-jwt')
+const _ = require('lodash')
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -60,13 +61,11 @@ const signup = (req, res) => {
 		sgMail
 			.send(emailInfo)
 			.then((s) => {
-				// console.log("sign up email sent", s)
 				return res.json({
 					message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
 				})
 			})
 			.catch((error) => {
-				// console.log("sign up email sent error", error)
 				return res.json({
 					message: error.message
 				})
@@ -156,4 +155,92 @@ const adminMiddleware = (req, res, next) => {
 	})
 }
 
-module.exports = { signup, accountActivation, signin, requireUserInfo, adminMiddleware }
+const forgotPassword = (req, res) => {
+	const { email } = req.body
+
+	User.findOne({ email }, (error, user) => {
+		if (error || !user) {
+			return res.status(400).json({
+				error: 'User with that email does not exist'
+			})
+		}
+		const token = jwt.sign({ _id: user._id, name: user.name }, process.env.JWT_RESET_PASSWORD, { expiresIn: '10m' })
+
+		const emailInfo = {
+			from: process.env.EMAIL_FROM,
+			to: email,
+			subject: `Password reset link`,
+			html: `
+					<h1>Please use the following link to reset your password</h1>
+					<p>${process.env.CLIENT_URL}/authentication/password/reset/${token}</p>
+					<hr/>
+					<p>This email may contain sensitive information</p>
+					<p>${process.env.CLIENT_URL}</p>
+				`
+		}
+
+		return user.updateOne({ resetPasswordLink: token }, (error, success) => {
+			if (error) {
+				console.log('reset password link error', error)
+				return res.status(400).json({
+					error: 'Database connection error on user password forgot request'
+				})
+			} else {
+				sgMail
+					.send(emailInfo)
+					.then((s) => {
+						return res.json({
+							message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+						})
+					})
+					.catch((error) => {
+						return res.json({
+							message: error.message
+						})
+					})
+			}
+		})
+	})
+}
+
+const resetPassword = (req, res) => {
+	const { resetPasswordLink, newPassword } = req.body
+
+	if (resetPasswordLink) {
+		jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(error, decoded) {
+			if (error) {
+				return res.status(400).json({
+					error: 'Expired link. Try again.'
+				})
+			}
+
+			User.findOne({ resetPasswordLink }, (error, user) => {
+				if (error || !user) {
+					return res.status(400).json({
+						error: 'Something went wrong. Try later.'
+					})
+				}
+
+				const updatedFields = {
+					password: newPassword,
+					resetPasswordLink: ''
+				}
+
+				user = _.extend(user, updatedFields)
+
+				user.save((error, result) => {
+					if (error) {
+						return res.status(400).json({
+							error: 'Error resetting user password'
+						})
+					}
+					res.json({
+						message: 'Success! You can now login with your new password.'
+					})
+				})
+			})
+		})
+	}
+}
+
+module.exports = { signup, accountActivation, signin, requireUserInfo, adminMiddleware, forgotPassword, resetPassword }

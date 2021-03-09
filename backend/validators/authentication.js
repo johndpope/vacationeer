@@ -11,4 +11,10 @@ const signInValidator = [
 	check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
 ]
 
-module.exports = { signupValidator, signInValidator }
+const forgotPasswordValidator = [ check('email').not().isEmpty().isEmail().withMessage('Enter a valid email address') ]
+
+const resetPasswordValidator = [
+	check('newPassword').not().isEmpty().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+]
+
+module.exports = { signupValidator, signInValidator, forgotPasswordValidator, resetPasswordValidator }

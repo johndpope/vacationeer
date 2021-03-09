@@ -38,7 +38,7 @@ const update = (req, res) => {
 		if (password) {
 			if (password.length < 6) {
 				return res.status(400).json({
-					error: 'Password should be atleast 6 characters long'
+					error: 'Password should be at least 6 characters long'
 				})
 			} else {
 				user.password = password

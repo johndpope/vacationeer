@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { isAuthenticated } from '../components/HelperFunctions'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -74,6 +74,10 @@ const SignUpPage = () => {
 				{isAuthenticated() ? <Redirect to='/' /> : null}
 				<h1 className='p-5 text-center'>Sign Up</h1>
 				{signUpForm()}
+				<br />
+				<Link to='/authentication/forgot-password' className='btn btn-sm btn-outline-danger'>
+					Forgot Password?
+				</Link>
 			</div>
 		</BluePrint>
 	)
