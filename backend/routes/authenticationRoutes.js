@@ -6,7 +6,9 @@ const {
 	accountActivation,
 	signin,
 	forgotPassword,
-	resetPassword
+	resetPassword,
+	googleLogin,
+	facebookLogin
 } = require('../controllers/authenticationControllers')
 
 const {
@@ -23,5 +25,8 @@ router.post('/signin', signInValidator, executeValidation, signin)
 
 router.put('/forgot-password', forgotPasswordValidator, executeValidation, forgotPassword)
 router.put('/reset-password', resetPasswordValidator, executeValidation, resetPassword)
+
+router.post('/google-login', googleLogin)
+router.post('/facebook-login', facebookLogin)
 
 module.exports = router

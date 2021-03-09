@@ -13,7 +13,7 @@ const BluePrint = ({ children, match }) => {
 	}
 
 	const navigation = () => (
-		<ul className='nav nav-tabs bg-primary'>
+		<ul className='nav nav-tabs bg-primary p-2'>
 			<li className='nav-item'>
 				<Link to='/' className='text-light nav-link' style={activeTab('/')}>
 					Home

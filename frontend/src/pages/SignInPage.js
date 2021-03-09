@@ -5,6 +5,8 @@ import { authenticate, isAuthenticated } from '../components/HelperFunctions'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import BluePrint from '../components/BluePrint'
+import Google from '../components/GoogleLogin'
+import Facebook from '../components/FacebookLogin'
 
 const initialState = {
 	email: 'markusmatu96@gmail.com',
@@ -18,6 +20,12 @@ const SignInPage = ({ history }) => {
 
 	const handleChange = (name) => (e) => {
 		setUserInfo({ ...userInfo, [name]: e.target.value })
+	}
+
+	const informParent = (resp) => {
+		authenticate(resp, () => {
+			isAuthenticated() && isAuthenticated().role === 'admin' ? history.push('/admin') : history.push('/private')
+		})
 	}
 
 	const handleSubmit = (e) => {
@@ -56,9 +64,12 @@ const SignInPage = ({ history }) => {
 			</div>
 
 			<div>
-				<button onClick={handleSubmit} className='btn btn-primary btn-raised'>
+				<button onClick={handleSubmit} className='btn btn-primary btn-raised btn mr-3'>
 					{buttonText}
 				</button>
+				<Link to='/authentication/forgot-password' className='btn btn-sm btn-outline-danger'>
+					Forgot Password?
+				</Link>
 			</div>
 		</form>
 	)
@@ -68,12 +79,13 @@ const SignInPage = ({ history }) => {
 			<div className='col-md-6 offset-md-3'>
 				<ToastContainer />
 				{isAuthenticated() ? <Redirect to='/' /> : null}
+
 				<h1 className='p-5 text-center'>Sign In</h1>
 				{signInForm()}
 				<br />
-				<Link to='/authentication/forgot-password' className='btn btn-sm btn-outline-danger'>
-					Forgot Password?
-				</Link>
+
+				<Google informParent={informParent} />
+				<Facebook informParent={informParent} />
 			</div>
 		</BluePrint>
 	)
