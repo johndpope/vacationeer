@@ -10,4 +10,4 @@ const executeValidation = (req, res, next) => {
 	next()
 }
 
-module.exports = { executeValidation }
+export { executeValidation }

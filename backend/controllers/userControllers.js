@@ -1,4 +1,4 @@
-const User = require('../models/userModel')
+import User from '../models/userModel'
 
 const read = (req, res) => {
 	const userId = req.params.id
@@ -60,4 +60,4 @@ const update = (req, res) => {
 	})
 }
 
-module.exports = { read, update }
+export { read, update }

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
-import BluePrint from '../components/BluePrint'
+import { toast } from 'react-toastify'
+import Layout from '../components/Layout'
 
 const initialState = {
 	name: '',
@@ -12,7 +11,7 @@ const initialState = {
 	visibility: true
 }
 
-const ActivationPage = ({ match }) => {
+const ActivationPage = ({ match, history }) => {
 	const [ userInfo, setUserInfo ] = useState(initialState)
 
 	const { name, token, visibility } = userInfo
@@ -34,9 +33,11 @@ const ActivationPage = ({ match }) => {
 			data: { token }
 		})
 			.then((resp) => {
-				console.log('Account activation', resp)
 				setUserInfo({ ...userInfo, visibility: false })
 				toast.success(resp.data.message)
+				setTimeout(() => {
+					history.push('/login')
+				}, 2000)
 			})
 			.catch((err) => {
 				console.log('Account activation error', err.response.data.error)
@@ -54,13 +55,12 @@ const ActivationPage = ({ match }) => {
 	)
 
 	return (
-		<BluePrint>
+		<Layout>
 			<div className='col-md-6 offset-md-3'>
-				<ToastContainer />
 				<h1 className='p-5 text-center'>Activate Account</h1>
 				{activationLink()}
 			</div>
-		</BluePrint>
+		</Layout>
 	)
 }
 

@@ -1,41 +1,14 @@
-const User = require('../models/userModel')
-const jwt = require('jsonwebtoken')
+import User from '../models/userModel'
+import jwt from 'jsonwebtoken'
 const sgMail = require('@sendgrid/mail')
-const expressJwt = require('express-jwt')
-const _ = require('lodash')
-const { OAuth2Client } = require('google-auth-library')
-const fetch = require('node-fetch')
+import expressJwt from 'express-jwt'
+import _ from 'lodash'
+import { OAuth2Client } from 'google-auth-library'
+import fetch from 'node-fetch'
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-// const signup = (req, res) => {
-// 	console.log('Req body on signup', req.body)
-// 	const { name, email, password } = req.body
-
-// 	User.findOne({ email }).exec((err, user) => {
-// 		if (user) {
-// 			return res.status(400).json({
-// 				error: 'Email is already taken'
-// 			})
-// 		}
-// 	})
-
-// 	const newUser = new User({ name, email, password })
-
-// 	newUser.save((error, success) => {
-// 		if (error) {
-// 			console.log('signup error', err)
-// 			return res.status(400).json({
-// 				error
-// 			})
-// 		}
-// 		res.json({
-// 			message: 'Sign up successful!'
-// 		})
-// 	})
-// }
-
-const signup = (req, res) => {
+const register = (req, res) => {
 	const { name, email, password } = req.body
 
 	User.findOne({ email }).exec((err, user) => {
@@ -110,7 +83,7 @@ const accountActivation = (req, res) => {
 	}
 }
 
-const signin = (req, res) => {
+const login = (req, res) => {
 	const { email, password } = req.body
 
 	User.findOne({ email }).exec((error, user) => {
@@ -127,11 +100,11 @@ const signin = (req, res) => {
 		}
 
 		const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
-		const { _id, name, email, role } = user
+		const { _id, name, email, role, createdAt, updatedAt } = user
 
 		return res.json({
 			token,
-			user: { _id, name, email, role }
+			user: { _id, name, email, role, createdAt, updatedAt }
 		})
 	})
 }
@@ -335,10 +308,10 @@ const facebookLogin = (req, res) => {
 		})
 }
 
-module.exports = {
-	signup,
+export {
+	register,
 	accountActivation,
-	signin,
+	login,
 	requireUserInfo,
 	adminMiddleware,
 	forgotPassword,

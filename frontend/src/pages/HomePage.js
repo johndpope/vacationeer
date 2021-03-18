@@ -1,9 +1,9 @@
 import React from 'react'
-import BluePrint from '../components/BluePrint'
+import Layout from '../components/Layout'
 
 const HomePage = () => {
 	return (
-		<BluePrint>
+		<Layout>
 			<div className='col-md-6 offset-md-3 text-center'>
 				<h1 className='p-5'>Authentication Boilerplate</h1>
 				<h2>Mern Stacked</h2>
@@ -15,7 +15,7 @@ const HomePage = () => {
 					to authenticate user identity.
 				</p>
 			</div>
-		</BluePrint>
+		</Layout>
 	)
 }
 

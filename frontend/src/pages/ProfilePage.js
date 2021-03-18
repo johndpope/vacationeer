@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { isAuthenticated, getCookie, signOut, updateUserInfo } from '../components/HelperFunctions'
-import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
-import BluePrint from '../components/BluePrint'
+import { toast } from 'react-toastify'
+import Layout from '../components/Layout'
+import DashboardNav from '../components/DashboardNav'
+import StripeNav from '../components/StripeNav'
 
 const initialState = {
 	role: '',
@@ -14,7 +14,7 @@ const initialState = {
 	buttonText: 'Submit'
 }
 
-const PrivatePage = ({ history }) => {
+const ProfilePage = ({ history }) => {
 	const [ userInfo, setUserInfo ] = useState(initialState)
 
 	const { role, name, email, password, buttonText } = userInfo
@@ -38,7 +38,7 @@ const PrivatePage = ({ history }) => {
 			}
 		})
 			.then((resp) => {
-				console.log('private profile update', resp)
+				console.log('Profile profile update', resp)
 				const { role, name, email } = resp.data
 				setUserInfo({ ...userInfo, role, name, email })
 			})
@@ -107,15 +107,22 @@ const PrivatePage = ({ history }) => {
 	)
 
 	return (
-		<BluePrint>
+		<Layout>
+			<div className='container-fluid bg-secondary p-5'>
+				<StripeNav />
+			</div>
+
+			<div className='container-fluid p-4'>
+				<DashboardNav />
+			</div>
+
 			<div className='col-md-6 offset-md-3'>
-				<ToastContainer />
 				<h1 className='p-5 text-center'>Profile Page</h1>
 				<h4 className='lead text-center'>Update Profile</h4>
 				{updateForm()}
 			</div>
-		</BluePrint>
+		</Layout>
 	)
 }
 
-export default PrivatePage
+export default ProfilePage

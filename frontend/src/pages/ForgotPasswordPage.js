@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
-import BluePrint from '../components/BluePrint'
+import { toast } from 'react-toastify'
+import Layout from '../components/Layout'
 
 const initialState = {
 	email: '',
@@ -53,13 +52,12 @@ const ForgotPasswordPage = ({ history }) => {
 	)
 
 	return (
-		<BluePrint>
+		<Layout>
 			<div className='col-md-6 offset-md-3'>
-				<ToastContainer />
 				<h1 className='p-5 text-center'>Forgot Password</h1>
 				{forgotPasswordForm()}
 			</div>
-		</BluePrint>
+		</Layout>
 	)
 }
 

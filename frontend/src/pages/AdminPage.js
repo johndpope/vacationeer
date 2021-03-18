@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { isAuthenticated, getCookie, signOut, updateUserInfo } from '../components/HelperFunctions'
-import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
-import BluePrint from '../components/BluePrint'
+import { toast } from 'react-toastify'
+import Layout from '../components/Layout'
 
 const initialState = {
 	role: '',
@@ -38,7 +36,7 @@ const AdminPage = ({ history }) => {
 			}
 		})
 			.then((resp) => {
-				console.log('private profile update', resp)
+				console.log('Profile update', resp)
 				const { role, name, email } = resp.data
 				setUserInfo({ ...userInfo, role, name, email })
 			})
@@ -107,14 +105,13 @@ const AdminPage = ({ history }) => {
 	)
 
 	return (
-		<BluePrint>
+		<Layout>
 			<div className='col-md-6 offset-md-3'>
-				<ToastContainer />
 				<h1 className='p-5 text-center'>Admin Profile Page</h1>
 				<h4 className='lead text-center'>Update Profile</h4>
 				{updateForm()}
 			</div>
-		</BluePrint>
+		</Layout>
 	)
 }
 

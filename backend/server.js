@@ -1,9 +1,8 @@
-const express = require('express')
-const { readdirSync } = require('fs')
-const mongoose = require('mongoose')
+import express from 'express'
+import { readdirSync } from 'fs'
+import mongoose from 'mongoose'
 const morgan = require('morgan')
-const bodyParser = require('body-parser')
-const cors = require('cors')
+import cors from 'cors'
 require('dotenv').config()
 
 const connectDB = async () => {
@@ -31,7 +30,7 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(cors({ origin: 'http://localhost:3000' }))
 }
 
-app.use(bodyParser.json({ limit: '3mb' }))
+app.use(express.json())
 
 readdirSync('./backend/routes').map((r) => app.use('/api', require('./routes/' + r)))
 

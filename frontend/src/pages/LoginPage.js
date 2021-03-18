@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
 import { authenticate, isAuthenticated } from '../components/HelperFunctions'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
-import BluePrint from '../components/BluePrint'
+import { toast } from 'react-toastify'
 import Google from '../components/GoogleLogin'
 import Facebook from '../components/FacebookLogin'
+import Layout from '../components/Layout'
 
 const initialState = {
 	email: 'markusmatu96@gmail.com',
@@ -14,7 +13,7 @@ const initialState = {
 	buttonText: 'Submit'
 }
 
-const SignInPage = ({ history }) => {
+const LoginPage = ({ history }) => {
 	const [ userInfo, setUserInfo ] = useState(initialState)
 	const { email, password, buttonText } = userInfo
 
@@ -24,7 +23,7 @@ const SignInPage = ({ history }) => {
 
 	const informParent = (resp) => {
 		authenticate(resp, () => {
-			isAuthenticated() && isAuthenticated().role === 'admin' ? history.push('/admin') : history.push('/private')
+			isAuthenticated() && isAuthenticated().role === 'admin' ? history.push('/admin') : history.push('/user/dashboard')
 		})
 	}
 
@@ -33,7 +32,7 @@ const SignInPage = ({ history }) => {
 		setUserInfo({ ...userInfo, buttonText: 'Submitting' })
 		axios({
 			method: 'POST',
-			url: `${process.env.REACT_APP_API}/signin`,
+			url: `${process.env.REACT_APP_API}/login`,
 			data: { email, password }
 		})
 			.then((resp) => {
@@ -41,7 +40,7 @@ const SignInPage = ({ history }) => {
 
 				authenticate(resp, () => {
 					setUserInfo({ ...userInfo, name: '', email: '', password: '', buttonText: 'Submitted' })
-					isAuthenticated() && isAuthenticated().role === 'admin' ? history.push('/admin') : history.push('/private')
+					isAuthenticated() && isAuthenticated().role === 'admin' ? history.push('/admin') : history.push('/user/dashboard')
 				})
 			})
 			.catch((err) => {
@@ -51,7 +50,7 @@ const SignInPage = ({ history }) => {
 			})
 	}
 
-	const signInForm = (e) => (
+	const loginForm = (e) => (
 		<form>
 			<div className='form-group'>
 				<label className='text-muted'>Email</label>
@@ -64,7 +63,7 @@ const SignInPage = ({ history }) => {
 			</div>
 
 			<div>
-				<button onClick={handleSubmit} className='btn btn-primary btn-raised btn mr-3'>
+				<button disabled={!email || !password} onClick={handleSubmit} className='btn btn-primary btn-raised btn mr-3'>
 					{buttonText}
 				</button>
 				<Link to='/authentication/forgot-password' className='btn btn-sm btn-outline-danger'>
@@ -75,20 +74,22 @@ const SignInPage = ({ history }) => {
 	)
 
 	return (
-		<BluePrint>
-			<div className='col-md-6 offset-md-3'>
-				<ToastContainer />
-				{isAuthenticated() ? <Redirect to='/' /> : null}
+		<Layout>
+			<div className='container-fluid bg-secondary p-5 text-center'>Sign In</div>
 
-				<h1 className='p-5 text-center'>Sign In</h1>
-				{signInForm()}
-				<br />
-
-				<Google informParent={informParent} />
-				<Facebook informParent={informParent} />
+			<div className='container'>
+				<div className='row'>
+					<div className='col-md-6 offset-md-3'>
+						{isAuthenticated() ? <Redirect to='/' /> : null}
+						{loginForm()}
+						<br />
+						<Google informParent={informParent} />
+						<Facebook informParent={informParent} />
+					</div>
+				</div>
 			</div>
-		</BluePrint>
+		</Layout>
 	)
 }
 
-export default SignInPage
+export default LoginPage
