@@ -1,21 +1,19 @@
 import { useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
+import { DatePicker, Select } from 'antd'
+import moment from 'moment'
+import { isAuthenticated, getCookie } from '../components/HelperFunctions'
+import { createHotel } from '../actions/hotelActions'
+import { toast } from 'react-toastify'
 
-// const config = {
-// 	appId: process.env.REACT_APP_ALGOLIA_APP_ID,
-// 	apiKey: process.env.REACT_APP_ALGOLIA_API_KEY,
-// 	language: 'en',
-// 	countries: [ 'se' ]
-// }
-
-console.log(process.env.REACT_APP_GOOGLE_API_KEY)
+const { Option } = Select
 
 const NewHotelsPage = () => {
 	const [ information, setInformation ] = useState({
 		title: '',
 		description: '',
-		location: '',
 		image: '',
+		location: '',
 		price: '',
 		from: '',
 		to: '',
@@ -24,9 +22,30 @@ const NewHotelsPage = () => {
 
 	const [ preview, setPreview ] = useState('https://via.placeholder.com/100x100.png?text=PREVIEW')
 
-	const { title, description, location, image, price, from, to, bed } = information
+	const { title, description, image, location, price, from, to, bed } = information
 
-	const handleSubmit = () => {}
+	const handleSubmit = async (e) => {
+		e.preventDefault()
+
+		const hotelInfo = new FormData()
+
+		hotelInfo.append('title', title)
+		hotelInfo.append('description', description)
+		hotelInfo.append('location', location)
+		hotelInfo.append('price', price)
+		image && hotelInfo.append('image', image)
+		hotelInfo.append('from', from)
+		hotelInfo.append('to', to)
+		hotelInfo.append('bed', bed)
+
+		const resp = await createHotel(getCookie().token, hotelInfo)
+
+		toast.success('Hotel successfully added!')
+
+		setTimeout(() => {
+			window.location.reload()
+		}, 1000)
+	}
 
 	const handleImageChange = (e) => {
 		setPreview(URL.createObjectURL(e.target.files[0]))
@@ -62,14 +81,21 @@ const NewHotelsPage = () => {
 					value={description}
 				/>
 
-				<GooglePlacesAutocomplete
-					apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-					className='form-control m-2'
-					placeholder='Location'
-					defaultValue={location}
-					onChange={({ suggestion }) => setInformation({ ...information, location: suggestion.value })}
-					style={{ height: '50px' }}
-				/>
+				<div
+					className='location'
+					value={location}
+					onChange={(e) => setInformation({ ...information, location: e.target.value })}
+				>
+					<GooglePlacesAutocomplete
+						apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+						selectProps={{
+							location,
+							onChange: (e) => setInformation({ ...information, location: e.label }),
+							className: 'm-2 w-100 h-100',
+							placeholder: 'Enter Location'
+						}}
+					/>
+				</div>
 
 				<input
 					type='number'
@@ -80,15 +106,32 @@ const NewHotelsPage = () => {
 					value={price}
 				/>
 
-				<input
-					type='number'
-					name='bed'
-					onChange={handleChange}
+				<Select
+					onChange={(value) => setInformation({ ...information, bed: value })}
+					className='w-100 m-2'
+					size='large'
 					placeholder='Number of beds'
-					className='form-control m-2'
-					value={bed}
-				/>
+				>
+					<Option key={1}>{1}</Option>
+					<Option key={2}>{2}</Option>
+					<Option key={3}>{3}</Option>
+					<Option key={4}>{4}</Option>
+				</Select>
 			</div>
+
+			<DatePicker
+				placeholder='From'
+				className='form-control m-2'
+				onChange={(date, dateString) => setInformation({ ...information, from: dateString })}
+				disabledDate={(currentDate) => currentDate && currentDate.valueOf() < moment().subtract(1, 'days')}
+			/>
+
+			<DatePicker
+				placeholder='To'
+				className='form-control m-2'
+				onChange={(date, dateString) => setInformation({ ...information, to: dateString })}
+				disabledDate={(currentDate) => currentDate && currentDate.valueOf() < moment().subtract(1, 'days')}
+			/>
 
 			<button className='btn btn-outline-primary m-2'>Save</button>
 		</form>
