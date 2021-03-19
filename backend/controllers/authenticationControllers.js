@@ -100,11 +100,11 @@ const login = (req, res) => {
 		}
 
 		const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
-		const { _id, name, email, role, createdAt, updatedAt } = user
+		const { _id, name, email, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession } = user
 
 		return res.json({
 			token,
-			user: { _id, name, email, role, createdAt, updatedAt }
+			user: { _id, name, email, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession }
 		})
 	})
 }
@@ -229,10 +229,10 @@ const googleLogin = (req, res) => {
 			User.findOne({ email }).exec((error, user) => {
 				if (user) {
 					const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
-					const { _id, email, name, role } = user
+					const { _id, email, name, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession } = user
 					return res.json({
 						token,
-						user: { _id, email, name, role }
+						user: { _id, email, name, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession }
 					})
 				} else {
 					let password = email + process.env.JWT_SECRET
@@ -245,10 +245,20 @@ const googleLogin = (req, res) => {
 							})
 						}
 						const token = jwt.sign({ _id: data._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
-						const { _id, email, name, role } = data
+						const {
+							_id,
+							email,
+							name,
+							role,
+							createdAt,
+							updatedAt,
+							stripe_account_id,
+							stripe_seller,
+							stripeSession
+						} = data
 						return res.json({
 							token,
-							user: { _id, email, name, role }
+							user: { _id, email, name, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession }
 						})
 					})
 				}
@@ -276,10 +286,10 @@ const facebookLogin = (req, res) => {
 			User.findOne({ email }).exec((error, user) => {
 				if (user) {
 					const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
-					const { _id, email, name, role } = user
+					const { _id, email, name, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession } = user
 					return res.json({
 						token,
-						user: { _id, email, name, role }
+						user: { _id, email, name, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession }
 					})
 				} else {
 					let password = email + process.env.JWT_SECRET
@@ -292,10 +302,20 @@ const facebookLogin = (req, res) => {
 							})
 						}
 						const token = jwt.sign({ _id: data._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
-						const { _id, email, name, role } = data
+						const {
+							_id,
+							email,
+							name,
+							role,
+							createdAt,
+							updatedAt,
+							stripe_account_id,
+							stripe_seller,
+							stripeSession
+						} = data
 						return res.json({
 							token,
-							user: { _id, email, name, role }
+							user: { _id, email, name, role, createdAt, updatedAt, stripe_account_id, stripe_seller, stripeSession }
 						})
 					})
 				}

@@ -30,3 +30,7 @@ input[type=range] {
 	background-color: rgb(34, 119, 255) !important;
 	color: #fff !important;
 }
+
+.pointer {
+	cursor: pointer;
+}

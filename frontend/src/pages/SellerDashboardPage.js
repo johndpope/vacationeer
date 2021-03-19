@@ -15,7 +15,7 @@ const SellerDashboardPage = () => {
 		setLoading(true)
 		try {
 			let response = await createStripeAccount(getCookie().token)
-			console.log(response)
+			window.location.href = response.data
 		} catch (error) {
 			console.log(error)
 			toast.error('Creating Stripe account failed, try again.')

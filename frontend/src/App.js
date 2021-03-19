@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import DashboardPage from './pages/DashboardPage'
 import SellerDashboardPage from './pages/SellerDashboardPage'
 import NewHotelsPage from './pages/NewHotelsPage'
+import StripeCallbackPage from './pages/StripeCallbackPage'
 
 const App = () => {
 	return (
@@ -28,6 +29,7 @@ const App = () => {
 				<PrivateRoute path='/user/dashboard/seller' component={SellerDashboardPage} exact />
 				<PrivateRoute path='/user/dashboard/profile' component={ProfilePage} exact />
 				<PrivateRoute path='/hotels/new' component={NewHotelsPage} exact />
+				<PrivateRoute path='/stripe/callback' component={StripeCallbackPage} exact />
 				<AdminRoute path='/admin' component={AdminPage} exact />
 				<Route path='/authentication/forgot-password' component={ForgotPasswordPage} exact />
 				<Route path='/authentication/password/reset/:token' component={ResetPasswordPage} exact />
