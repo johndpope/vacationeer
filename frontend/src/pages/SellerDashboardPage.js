@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DashboardNav from '../components/DashboardNav'
 import Layout from '../components/Layout'
 import StripeNav from '../components/StripeNav'
@@ -7,9 +7,21 @@ import { isAuthenticated, getCookie } from '../components/HelperFunctions'
 import { HomeOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify'
 import { createStripeAccount } from '../actions/stripeActions'
+import HotelCard from '../components/HotelCard'
+import { deleteHotel, hotelsSeller } from '../actions/hotelActions'
 
 const SellerDashboardPage = () => {
 	const [ loading, setLoading ] = useState(false)
+	const [ hotels, setHotels ] = useState([])
+
+	useEffect(() => {
+		loadSellersHotels()
+	}, [])
+
+	const loadSellersHotels = async () => {
+		const { data } = await hotelsSeller(getCookie().token)
+		setHotels(data)
+	}
 
 	const handleClick = async () => {
 		setLoading(true)
@@ -21,6 +33,14 @@ const SellerDashboardPage = () => {
 			toast.error('Creating Stripe account failed, try again.')
 			setLoading(false)
 		}
+	}
+
+	const handleDelete = async (hotelId) => {
+		if (!window.confirm('Are you sure?')) return
+		deleteHotel(getCookie().token, hotelId).then((resp) => {
+			toast.success('Hotel successfully deleted!')
+			loadSellersHotels()
+		})
 	}
 
 	const stripeLinked = () => (
@@ -35,6 +55,18 @@ const SellerDashboardPage = () => {
 						+ Add New
 					</Link>
 				</div>
+			</div>
+
+			<div className='row'>
+				{hotels.map((hotel) => (
+					<HotelCard
+						key={hotel._id}
+						hotel={hotel}
+						showViewMoreButton={false}
+						owner={true}
+						handleDelete={handleDelete}
+					/>
+				))}
 			</div>
 		</div>
 	)

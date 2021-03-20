@@ -15,6 +15,7 @@ import DashboardPage from './pages/DashboardPage'
 import SellerDashboardPage from './pages/SellerDashboardPage'
 import NewHotelsPage from './pages/NewHotelsPage'
 import StripeCallbackPage from './pages/StripeCallbackPage'
+import EditHotelPage from './pages/EditHotelPage'
 
 const App = () => {
 	return (
@@ -29,6 +30,7 @@ const App = () => {
 				<PrivateRoute path='/user/dashboard/seller' component={SellerDashboardPage} exact />
 				<PrivateRoute path='/user/dashboard/profile' component={ProfilePage} exact />
 				<PrivateRoute path='/hotels/new' component={NewHotelsPage} exact />
+				<PrivateRoute path='/hotel/edit/:hotelId' component={EditHotelPage} exact />
 				<PrivateRoute path='/stripe/callback' component={StripeCallbackPage} exact />
 				<AdminRoute path='/admin' component={AdminPage} exact />
 				<Route path='/authentication/forgot-password' component={ForgotPasswordPage} exact />

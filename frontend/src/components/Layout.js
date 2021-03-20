@@ -38,7 +38,7 @@ const BluePrint = ({ children, match }) => {
 			isAuthenticated().role === 'admin' && (
 				<li className='nav-item'>
 					<Link to='/admin' className={`nav-link ${active === '/admin' && 'active'}`}>
-						Welcome {isAuthenticated().name}!
+						{isAuthenticated().name}´s Dashboard
 					</Link>
 				</li>
 			)}
@@ -53,7 +53,7 @@ const BluePrint = ({ children, match }) => {
 							? 'active'
 							: active === '/user/dashboard/seller' ? 'active' : active === '/user/dashboard/profile' ? 'active' : ''}`}
 					>
-						Welcome {isAuthenticated().name}!
+						{isAuthenticated().name}´s Dashboard
 					</Link>
 				</li>
 			)}

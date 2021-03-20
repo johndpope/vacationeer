@@ -37,7 +37,7 @@ const ActivationPage = ({ match, history }) => {
 				toast.success(resp.data.message)
 				setTimeout(() => {
 					history.push('/login')
-				}, 2000)
+				}, 1500)
 			})
 			.catch((err) => {
 				console.log('Account activation error', err.response.data.error)

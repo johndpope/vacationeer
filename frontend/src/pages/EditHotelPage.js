@@ -1,17 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Select } from 'antd'
 import { getCookie } from '../components/HelperFunctions'
-import { createHotel } from '../actions/hotelActions'
+import { editHotel, read } from '../actions/hotelActions'
 import { toast } from 'react-toastify'
-import CreateHotelForm from '../components/CreateHotelForm'
+import EditHotelForm from '../components/EditHotelForm'
 
 const { Option } = Select
 
-const NewHotelsPage = ({ history }) => {
+const EditHotelPage = ({ history, match }) => {
 	const [ information, setInformation ] = useState({
 		title: '',
 		description: '',
-		image: '',
 		location: '',
 		price: '',
 		from: '',
@@ -19,9 +18,21 @@ const NewHotelsPage = ({ history }) => {
 		bed: ''
 	})
 
+	const [ image, setImage ] = useState('')
+
 	const [ preview, setPreview ] = useState('https://via.placeholder.com/100x100.png?text=PREVIEW')
 
-	const { title, description, image, location, price, from, to, bed } = information
+	const { title, description, location, price, from, to, bed } = information
+
+	useEffect(() => {
+		loadHotel()
+	}, [])
+
+	const loadHotel = async () => {
+		const resp = await read(match.params.hotelId)
+		setInformation({ ...information, ...resp.data })
+		setPreview(`${process.env.REACT_APP_API}/hotel/image/${resp.data._id}`)
+	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
@@ -38,8 +49,7 @@ const NewHotelsPage = ({ history }) => {
 		hotelInfo.append('bed', bed)
 
 		try {
-			const resp = await createHotel(getCookie().token, hotelInfo)
-
+			const resp = await editHotel(getCookie().token, hotelInfo, match.params.hotelId)
 			toast.success('Hotel successfully added!')
 
 			setTimeout(() => {
@@ -47,13 +57,13 @@ const NewHotelsPage = ({ history }) => {
 			}, 1500)
 		} catch (error) {
 			console.log(error)
-			toast.error(error.response.data)
+			toast.error(error.response.data.error)
 		}
 	}
 
 	const handleImageChange = (e) => {
 		setPreview(URL.createObjectURL(e.target.files[0]))
-		setInformation({ ...information, image: e.target.files[0] })
+		setImage(e.target.files[0])
 	}
 
 	const handleChange = (e) => {
@@ -63,13 +73,13 @@ const NewHotelsPage = ({ history }) => {
 	return (
 		<div>
 			<div className='container-fluid bg-secondary p-5 text-center'>
-				<h2>Add Hotel</h2>
+				<h2>Edit Hotel</h2>
 			</div>
 			<div className='container-fluid'>
 				<div className='row'>
 					<div className='col-md-10'>
 						<br />
-						<CreateHotelForm
+						<EditHotelForm
 							information={information}
 							setInformation={setInformation}
 							handleChange={handleChange}
@@ -80,10 +90,11 @@ const NewHotelsPage = ({ history }) => {
 					<div className='col-md-2'>
 						<img src={preview} alt='preview-image' className='img img-fluid m-2' />
 					</div>
+					<pre>{JSON.stringify(information, null, 4)}</pre>
 				</div>
 			</div>
 		</div>
 	)
 }
 
-export default NewHotelsPage
+export default EditHotelPage

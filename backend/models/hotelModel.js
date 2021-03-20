@@ -8,9 +8,9 @@ const hotelSchema = new mongoose.Schema(
 			type: String,
 			required: 'Title is required'
 		},
-		content: {
+		description: {
 			type: String,
-			required: 'Content is required',
+			required: 'Description is required',
 			maxlength: 5000
 		},
 		location: {
@@ -26,7 +26,7 @@ const hotelSchema = new mongoose.Schema(
 			ref: 'User'
 		},
 		image: {
-			type: 'Buffer',
+			data: 'Buffer',
 			contentType: String
 		},
 		from: {

@@ -1,19 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { loadAllHotels } from '../actions/hotelActions'
+import HotelCard from '../components/HotelCard'
 import Layout from '../components/Layout'
 
 const HomePage = () => {
+	const [ hotels, setHotels ] = useState([])
+
+	useEffect(() => {
+		importAllHotels()
+	}, [])
+
+	const importAllHotels = async () => {
+		const resp = await loadAllHotels()
+		setHotels(resp.data)
+	}
 	return (
 		<Layout>
-			<div className='col-md-6 offset-md-3 text-center'>
-				<h1 className='p-5'>Authentication Boilerplate</h1>
-				<h2>Mern Stacked</h2>
-				<hr />
-				<p className='lead'>
-					<strong>AUTHENTICATION:</strong> Authentication is the process of identifying users that request access to a
-					system, network, or device. Access control often determines user identity according to credentials like
-					username and password. Other authentication technologies like biometrics and authentication apps are also used
-					to authenticate user identity.
-				</p>
+			<div className='container-fluid bg-secondary p-5 text-center'>
+				<h1>All Hotels</h1>
+			</div>
+			<div className='container-fluid'>
+				<br />
+				{hotels.map((hotel) => <HotelCard key={hotel._id} hotel={hotel} />)}
 			</div>
 		</Layout>
 	)
