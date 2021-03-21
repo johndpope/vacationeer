@@ -1,9 +1,12 @@
 import { currencyFormatter } from '.././actions/stripeActions'
 import { diffDays } from '../actions/hotelActions'
 import { Link, useHistory } from 'react-router-dom'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { useState } from 'react'
+import OrderModal from './OrderModal'
 
-const HotelCard = ({ hotel, handleDelete = (f) => f, owner = false, showViewMoreButton = true }) => {
+const BookingCard = ({ hotel, session, orderedBy }) => {
+	const [ showModal, setShowModal ] = useState(false)
+
 	const history = useHistory()
 	return (
 		<div className='card mb-3'>
@@ -43,23 +46,20 @@ const HotelCard = ({ hotel, handleDelete = (f) => f, owner = false, showViewMore
 								for {diffDays(hotel.from, hotel.to)} {diffDays(hotel.from, hotel.to) <= 1 ? ' day' : ' days'}
 							</span>
 						</p>
-						<p className='card-text'>{hotel.bed}{hotel.bed === 1 ? " bed": " beds"}</p>
+						<p className='card-text'>
+							{hotel.bed}
+							{hotel.bed === 1 ? ' bed' : ' beds'}
+						</p>
 						<p className='card-text'>Available from {new Date(hotel.from).toLocaleDateString()}</p>
 
+						{showModal && (
+							<OrderModal showModal={showModal} setShowModal={setShowModal} session={session} orderedBy={orderedBy} />
+						)}
+
 						<div className='d-flex justify-content-between h4'>
-							{showViewMoreButton && (
-								<button onClick={() => history.push(`/hotel/${hotel._id}`)} className='btn btn-primary'>
-									Show More
-								</button>
-							)}
-							{owner && (
-								<>
-									<Link to={`/hotel/edit/${hotel._id}`}>
-										<EditOutlined className='text-warning' />
-									</Link>
-									<DeleteOutlined onClick={() => handleDelete(hotel._id)} className='text-danger' />
-								</>
-							)}
+							<button onClick={() => setShowModal(!showModal)} className='btn btn-primary'>
+								Show Payment Information
+							</button>
 						</div>
 					</div>
 				</div>
@@ -68,4 +68,4 @@ const HotelCard = ({ hotel, handleDelete = (f) => f, owner = false, showViewMore
 	)
 }
 
-export default HotelCard
+export default BookingCard

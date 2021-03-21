@@ -16,6 +16,10 @@ import SellerDashboardPage from './pages/SellerDashboardPage'
 import NewHotelsPage from './pages/NewHotelsPage'
 import StripeCallbackPage from './pages/StripeCallbackPage'
 import EditHotelPage from './pages/EditHotelPage'
+import ViewHotelPage from './pages/ViewHotelPage'
+import StripeSuccessPage from './pages/StripeSuccessPage'
+import StripeCancelPage from './pages/StripeCancelPage'
+import SearchResultPage from './pages/SearchResultPage'
 
 const App = () => {
 	return (
@@ -35,6 +39,10 @@ const App = () => {
 				<AdminRoute path='/admin' component={AdminPage} exact />
 				<Route path='/authentication/forgot-password' component={ForgotPasswordPage} exact />
 				<Route path='/authentication/password/reset/:token' component={ResetPasswordPage} exact />
+				<Route path='/hotel/:hotelId' component={ViewHotelPage} exact />
+				<PrivateRoute path='/stripe/success/:hotelId' component={StripeSuccessPage} exact />
+				<PrivateRoute path='/stripe/cancel' component={StripeCancelPage} exact />
+				<Route path='/search-result' component={SearchResultPage} exact />
 			</Switch>
 		</Router>
 	)

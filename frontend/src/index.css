@@ -36,11 +36,21 @@ input[type=range] {
 }
 
 .css-1hwfws3 {
-	min-height: 60px;
+	min-height: 50px;
 }
 
-/* .css-1hwfws3:before {
-	content: "This is CSS-generated.";
-	display: block;
-	position: absolute;
-} */
+.ant-modal-footer {
+	display: none;
+}
+
+.ant-select-selector {
+	height: 50px !important;
+}
+
+.ant-select-selection-placeholder {
+	margin-top: 5px;
+}
+
+.ant-select-selection-item {
+	margin-top: 5px;
+}

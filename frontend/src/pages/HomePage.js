@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { loadAllHotels } from '../actions/hotelActions'
 import HotelCard from '../components/HotelCard'
 import Layout from '../components/Layout'
+import SearchForm from '../components/SearchForm'
 
 const HomePage = () => {
 	const [ hotels, setHotels ] = useState([])
@@ -18,6 +19,10 @@ const HomePage = () => {
 		<Layout>
 			<div className='container-fluid bg-secondary p-5 text-center'>
 				<h1>All Hotels</h1>
+			</div>
+			<div className='col'>
+				<br />
+				<SearchForm />
 			</div>
 			<div className='container-fluid'>
 				<br />

@@ -10,7 +10,10 @@ const {
 	remove,
 	hotelOwner,
 	read,
-	update
+	update,
+	userHotelBookings,
+	isAlreadyBooked,
+	searchListings
 } = require('../controllers/hotelControllers')
 const { requireUserInfo } = require('../controllers/authenticationControllers')
 
@@ -21,5 +24,8 @@ router.get('/hotels/seller', requireUserInfo, hotelsSeller)
 router.delete('/delete-hotel/:hotelId', requireUserInfo, hotelOwner, remove)
 router.get('/hotel/:hotelId', read)
 router.put('/edit-hotel/:hotelId', requireUserInfo, hotelOwner, formidable(), update)
+router.get('/user/hotel-bookings', requireUserInfo, userHotelBookings)
+router.get('/is-already-booked/:hotelId', requireUserInfo, isAlreadyBooked)
+router.post('/search-listings', searchListings)
 
 module.exports = router

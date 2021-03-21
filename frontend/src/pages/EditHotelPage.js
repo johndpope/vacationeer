@@ -4,6 +4,7 @@ import { getCookie } from '../components/HelperFunctions'
 import { editHotel, read } from '../actions/hotelActions'
 import { toast } from 'react-toastify'
 import EditHotelForm from '../components/EditHotelForm'
+import Layout from '../components/Layout'
 
 const { Option } = Select
 
@@ -50,7 +51,7 @@ const EditHotelPage = ({ history, match }) => {
 
 		try {
 			const resp = await editHotel(getCookie().token, hotelInfo, match.params.hotelId)
-			toast.success('Hotel successfully added!')
+			toast.success('Hotel successfully updated!')
 
 			setTimeout(() => {
 				history.push('/user/dashboard/seller')
@@ -71,7 +72,7 @@ const EditHotelPage = ({ history, match }) => {
 	}
 
 	return (
-		<div>
+		<Layout>
 			<div className='container-fluid bg-secondary p-5 text-center'>
 				<h2>Edit Hotel</h2>
 			</div>
@@ -90,10 +91,10 @@ const EditHotelPage = ({ history, match }) => {
 					<div className='col-md-2'>
 						<img src={preview} alt='preview-image' className='img img-fluid m-2' />
 					</div>
-					<pre>{JSON.stringify(information, null, 4)}</pre>
+					{/* <pre>{JSON.stringify(information, null, 4)}</pre> */}
 				</div>
 			</div>
-		</div>
+		</Layout>
 	)
 }
 

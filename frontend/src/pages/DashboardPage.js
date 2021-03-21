@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardNav from '../components/DashboardNav'
 import Layout from '../components/Layout'
 import StripeNav from '../components/StripeNav'
 import { Link } from 'react-router-dom'
+import { getCookie } from '../components/HelperFunctions'
+import { userHotelBookings } from '../actions/hotelActions'
+import BookingCard from '../components/BookingCard'
 
 const DashboardPage = () => {
+	const [ booking, setBooking ] = useState([])
+	useEffect(() => {
+		loadUserBookings()
+	}, [])
+
+	const loadUserBookings = async () => {
+		const resp = await userHotelBookings(getCookie().token)
+		console.log(resp)
+		setBooking(resp.data)
+	}
+
 	return (
 		<Layout>
 			<div className='container-fluid bg-secondary p-5'>
@@ -27,6 +41,10 @@ const DashboardPage = () => {
 						</Link>
 					</div>
 				</div>
+			</div>
+
+			<div className='row'>
+				{booking.map((b) => <BookingCard key={b._id} hotel={b.hotel} orderedBy={b.orderedBy} session={b.session} />)}
 			</div>
 		</Layout>
 	)
