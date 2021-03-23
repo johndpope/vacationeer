@@ -27,30 +27,76 @@ input[type=range] {
 } */
 
 .active {
-	background-color: rgb(34, 119, 255) !important;
-	color: #fff !important;
+  background-color: rgb(34, 119, 255) !important;
+  color: #fff !important;
 }
 
 .pointer {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .css-1hwfws3 {
-	min-height: 50px;
+  min-height: 50px;
 }
 
 .ant-modal-footer {
-	display: none;
+  display: none;
 }
 
 .ant-select-selector {
-	height: 50px !important;
+  height: 50px !important;
 }
 
 .ant-select-selection-placeholder {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 .ant-select-selection-item {
-	margin-top: 5px;
+  margin-top: 5px;
+}
+
+.btn-primary {
+  background-color: rgb(34, 119, 255) !important;
+}
+
+.backround-img {
+  background-image: url(./images/background2.png);
+  background-size: cover;
+  background-position: center;
+}
+
+.backround2-img {
+  background-image: url(./images/background.jpeg);
+  background-size: cover;
+  background-position: center;
+}
+
+.primary-heading {
+  /* display: inline-block; */
+  font-size: 3rem;
+  text-transform: uppercase;
+  font-weight: 750;
+  background-image: linear-gradient(to right, #6455ec, #2a07f3);
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 2.5px;
+}
+
+.auth-form {
+  border-radius: 5%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background-color: rgb(238, 238, 238);
+}
+
+.auth-form:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.auth-form2 {
+  background-color: rgb(238, 238, 238);
+}
+
+.auth-form2:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }

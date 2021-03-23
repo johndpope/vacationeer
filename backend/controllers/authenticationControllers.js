@@ -165,7 +165,7 @@ const forgotPassword = (req, res) => {
 					.send(emailInfo)
 					.then((s) => {
 						return res.json({
-							message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+							message: `Email has been sent to ${email}. Follow the instructions to update your password.`
 						})
 					})
 					.catch((error) => {
@@ -185,7 +185,7 @@ const resetPassword = (req, res) => {
 		jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, function(error, decoded) {
 			if (error) {
 				return res.status(400).json({
-					error: 'Expired link. Try again.'
+					error: 'Expired link. Sign up again.'
 				})
 			}
 
