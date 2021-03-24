@@ -39,8 +39,13 @@ input[type=range] {
   min-height: 50px;
 }
 
+.btn,
+.custom-file-control:before {
+  margin-bottom: 0;
+}
+
 .ant-select-selector {
-  height: 50px !important;
+  height: 52px !important;
 }
 
 .ant-select-selection-placeholder {
@@ -70,6 +75,10 @@ input[type=range] {
   background-size: cover;
   background-position: center;
 }
+/* 
+.bg-smoke {
+  background-color: whitesmoke;
+} */
 
 .primary-heading {
   /* display: inline-block; */

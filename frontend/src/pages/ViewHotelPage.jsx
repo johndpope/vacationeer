@@ -75,7 +75,7 @@ const ViewHotelPage = ({ match, history }) => {
 
   return (
     <Layout>
-      <div className='container-fluid bg-secondary p-5 text-center'>
+      <div className='container-fluid p-5 text-center'>
         <h2>{hotel.title}</h2>
       </div>
 
