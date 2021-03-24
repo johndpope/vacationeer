@@ -44,8 +44,8 @@ export const create = async (req, res) => {
 export const hotels = async (req, res) => {
   const { page } = req.body
   const currentPage = page || 1
-  const perPage = 8
-  const allHotels = await Hotel.find({   })
+  const perPage = 6
+  const allHotels = await Hotel.find({ from: { $gte: new Date() } })
     .skip((currentPage - 1) * perPage)
     .limit(perPage)
     .select('-image.data')
@@ -54,7 +54,27 @@ export const hotels = async (req, res) => {
   res.json(allHotels)
 }
 
+// exports.list = async (req, res) => {
+//   // console.table(req.body);
+//   try {
+//     // createdAt/updatedAt, desc/asc, 3
+//     const { sort, order, page } = req.body;
+//     const currentPage = page || 1;
+//     const perPage = 3; // 3
 
+//     const products = await Product.find({})
+//       .skip((currentPage - 1) * perPage)
+//       .populate("category")
+//       .populate("subs")
+//       .sort([[sort, order]])
+//       .limit(perPage)
+//       .exec();
+
+//     res.json(products);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 export const image = async (req, res) => {
   const hotel = await Hotel.findById(req.params.id).exec()
@@ -65,7 +85,13 @@ export const image = async (req, res) => {
 }
 
 export const hotelsSeller = async (req, res) => {
+  const { page } = req.body
+
+  const currentPage = page || 1
+  const perPage = 6
   const allHotels = await Hotel.find({ postedBy: req.user._id })
+    .skip((currentPage - 1) * perPage)
+    .limit(perPage)
     .select('-image.data')
     .populate('postedBy', '_id name')
     .exec()

@@ -24,12 +24,16 @@ export const diffDays = (from, to) => {
   return difference
 }
 
-export const hotelsSeller = async (token) =>
-  await axios.get(`${process.env.REACT_APP_API}/hotels/seller`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+export const hotelsSeller = async (token, page) =>
+  await axios.post(
+    `${process.env.REACT_APP_API}/hotels/seller`,
+    { page },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
 
 export const deleteHotel = async (token, hotelId) =>
   await axios.delete(`${process.env.REACT_APP_API}/delete-hotel/${hotelId}`, {

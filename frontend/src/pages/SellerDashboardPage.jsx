@@ -8,18 +8,30 @@ import { HomeOutlined } from '@ant-design/icons'
 import { toast } from 'react-toastify'
 import { createStripeAccount } from '../actions/stripeActions'
 import HotelCard from '../components/HotelCard'
-import { deleteHotel, hotelsSeller } from '../actions/hotelActions'
+import {
+  deleteHotel,
+  hotelsSeller,
+  getHotelsCount,
+} from '../actions/hotelActions'
+import { Pagination } from 'antd'
 
 const SellerDashboardPage = () => {
   const [loading, setLoading] = useState(false)
   const [hotels, setHotels] = useState([])
+  const [hotelsCount, setHotelsCount] = useState(0)
+
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     loadSellersHotels()
+  }, [page])
+
+  useEffect(() => {
+    getHotelsCount().then((resp) => setHotelsCount(resp.data))
   }, [])
 
   const loadSellersHotels = async () => {
-    const { data } = await hotelsSeller(getCookie().token)
+    const { data } = await hotelsSeller(getCookie().token, page)
     setHotels(data)
   }
 
@@ -116,6 +128,14 @@ const SellerDashboardPage = () => {
       isAuthenticated().stripe_seller.charges_enabled
         ? stripeLinked()
         : stripeUnLinked()}
+
+      <nav className='col-md-4 offset-md-4 text-center pt-2 p-3'>
+        <Pagination
+          current={page}
+          total={(hotelsCount / 6) * 10}
+          onChange={(value) => setPage(value)}
+        />
+      </nav>
     </Layout>
   )
 }

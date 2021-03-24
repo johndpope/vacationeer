@@ -45,7 +45,7 @@ const HotelCard = ({
             <p className='alert alert-info'>{hotel.location}</p>
             <p className='card-text'>{`${hotel.description.substring(
               1,
-              200
+              400
             )}...`}</p>
             {hotel && hotel.ratings && hotel.ratings.length > 0 ? (
               showAverage(hotel)

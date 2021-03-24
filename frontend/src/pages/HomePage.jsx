@@ -41,7 +41,7 @@ const HomePage = () => {
       <nav className='col-md-4 offset-md-4 text-center pt-2 p-3'>
         <Pagination
           current={page}
-          total={(hotelsCount / 8) * 10}
+          total={(hotelsCount / 6) * 10}
           onChange={(value) => setPage(value)}
         />
       </nav>
