@@ -2,6 +2,7 @@ import { currencyFormatter } from '../actions/stripeActions'
 import { diffDays } from '../actions/hotelActions'
 import { useState } from 'react'
 import OrderModal from './OrderModal'
+import { showAverage } from './Rating'
 
 const BookingCard = ({ hotel, session, orderedBy }) => {
   const [showModal, setShowModal] = useState(false)
@@ -42,6 +43,11 @@ const BookingCard = ({ hotel, session, orderedBy }) => {
               1,
               200
             )}...`}</p>
+            {hotel && hotel.ratings && hotel.ratings.length > 0 ? (
+              showAverage(hotel)
+            ) : (
+              <div className='text-danger pt-1 pb-3'>No ratings yet</div>
+            )}
             <p className='card-text'>
               <span className='text-primary'>
                 for {diffDays(hotel.from, hotel.to)}{' '}
