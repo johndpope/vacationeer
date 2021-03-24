@@ -42,7 +42,7 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      <div className='row'>
+      <div className='container-fluid'>
         {booking.map((b) => (
           <BookingCard
             key={b._id}

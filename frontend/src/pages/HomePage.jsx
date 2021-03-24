@@ -37,15 +37,14 @@ const HomePage = () => {
           <HotelCard key={hotel._id} hotel={hotel} />
         ))}
       </div>
-      <div className='row'>
-        <nav className='col-md-4 offset-md-4 text-center pt-2 p-3'>
-          <Pagination
-            current={page}
-            total={(hotelsCount / 8) * 10}
-            onChange={(value) => setPage(value)}
-          />
-        </nav>
-      </div>
+
+      <nav className='col-md-4 offset-md-4 text-center pt-2 p-3'>
+        <Pagination
+          current={page}
+          total={(hotelsCount / 8) * 10}
+          onChange={(value) => setPage(value)}
+        />
+      </nav>
     </Layout>
   )
 }

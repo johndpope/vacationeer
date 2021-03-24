@@ -57,7 +57,7 @@ const SellerDashboardPage = () => {
         </div>
       </div>
 
-      <div className='row'>
+      <div className='container-fluid'>
         {hotels.map((hotel) => (
           <HotelCard
             key={hotel._id}
