@@ -55,3 +55,12 @@ export const isAlreadyBooked = async (token, hotelId) =>
 	})
 
 export const searchListings = async (query) => await axios.post(`${process.env.REACT_APP_API}/search-listings`, query)
+
+
+
+export const hotelStar = async (hotelId, star, token) =>
+	await axios.put(`${process.env.REACT_APP_API}/hotel/star/${hotelId}`, {star}, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	})

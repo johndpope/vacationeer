@@ -13,7 +13,8 @@ const {
 	update,
 	userHotelBookings,
 	isAlreadyBooked,
-	searchListings
+	searchListings,
+	hotelStar
 } = require('../controllers/hotelControllers')
 const { requireUserInfo } = require('../controllers/authenticationControllers')
 
@@ -27,5 +28,6 @@ router.put('/edit-hotel/:hotelId', requireUserInfo, hotelOwner, formidable(), up
 router.get('/user/hotel-bookings', requireUserInfo, userHotelBookings)
 router.get('/is-already-booked/:hotelId', requireUserInfo, isAlreadyBooked)
 router.post('/search-listings', searchListings)
+router.put("/hotel/star/:hotelId", requireUserInfo, hotelStar)
 
 module.exports = router

@@ -2,7 +2,7 @@ import { Route } from 'react-router-dom'
 import { isAuthenticated, signOut } from './HelperFunctions'
 import { Link, withRouter } from 'react-router-dom'
 
-const BluePrint = ({ children, match }) => {
+const Layout = ({ children, match }) => {
   const active = window.location.pathname
 
   const navigation = () => (
@@ -103,4 +103,4 @@ const BluePrint = ({ children, match }) => {
   )
 }
 
-export default withRouter(BluePrint)
+export default withRouter(Layout)

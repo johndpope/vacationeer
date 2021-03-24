@@ -37,7 +37,13 @@ const hotelSchema = new mongoose.Schema(
 		},
 		bed: {
 			type: Number
-		}
+		},
+		ratings: [
+      {
+        star: Number,
+        postedBy: { type: ObjectId, ref: "User" },
+      },
+    ],
 	},
 	{ timestamps: true }
 )

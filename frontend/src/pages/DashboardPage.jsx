@@ -15,7 +15,6 @@ const DashboardPage = () => {
 
   const loadUserBookings = async () => {
     const resp = await userHotelBookings(getCookie().token)
-    console.log(resp)
     setBooking(resp.data)
   }
 

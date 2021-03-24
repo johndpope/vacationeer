@@ -39,10 +39,6 @@ input[type=range] {
   min-height: 50px;
 }
 
-.ant-modal-footer {
-  display: none;
-}
-
 .ant-select-selector {
   height: 50px !important;
 }
@@ -53,6 +49,10 @@ input[type=range] {
 
 .ant-select-selection-item {
   margin-top: 5px;
+}
+
+.ant-modal-footer {
+  display: none;
 }
 
 .btn-primary {
@@ -99,4 +99,8 @@ input[type=range] {
 
 .auth-form2:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.star-color {
+  color: orange !important;
 }

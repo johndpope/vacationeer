@@ -7,6 +7,10 @@ const OrderModal = ({ session, orderedBy, showModal, setShowModal }) => {
       visible={showModal}
       title='Order Payment Information'
       onCancel={() => setShowModal(!showModal)}
+      onOk={() => {
+        setShowModal(!showModal)
+      }}
+      onCancel={() => setShowModal(!showModal)}
     >
       <p>Payment Intent: {session.payment_intent}</p>
       <p>Payment Status: {session.payment_status}</p>

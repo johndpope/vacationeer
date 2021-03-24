@@ -1,22 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
-import { diffDays, isAlreadyBooked, read } from '../actions/hotelActions'
+import {
+  diffDays,
+  isAlreadyBooked,
+  read,
+  hotelStar,
+} from '../actions/hotelActions'
 import moment from 'moment'
 import { getCookie, isAuthenticated } from '../components/HelperFunctions'
 import { getSessionId } from '../actions/stripeActions'
 import { loadStripe } from '@stripe/stripe-js'
+import StarRating from 'react-star-ratings'
+import RatingModal from '../components/RatingModal'
+import { Card } from 'antd'
+import { showAverage } from '../components/Rating'
 
 const ViewHotelPage = ({ match, history }) => {
   const [hotel, setHotel] = useState({})
   const [image, setImage] = useState('')
   const [loading, setLoading] = useState(false)
   const [alreadyBooked, setAlreadyBooked] = useState(false)
+  const [star, setStar] = useState(0)
 
   const hotelId = match.params.hotelId
 
   useEffect(() => {
     loadHotel()
   }, [])
+
+  useEffect(() => {
+    if (hotel.ratings && isAuthenticated()) {
+      let existingRatingObject = hotel.ratings.find(
+        (ele) => ele.postedBy.toString() === isAuthenticated()._id.toString()
+      )
+      existingRatingObject && setStar(existingRatingObject.star)
+    }
+  })
 
   useEffect(() => {
     if (isAuthenticated() && getCookie().token) {
@@ -34,13 +53,14 @@ const ViewHotelPage = ({ match, history }) => {
 
   const handleClick = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     if (!isAuthenticated() || !getCookie().token) {
-      history.push('/login')
-      return
+      history.push({
+        pathname: '/login',
+        state: { from: `/hotel/${hotelId}` },
+      })
     }
-    setLoading(true)
-    if (!isAuthenticated()) history.push('/login')
 
     const resp = await getSessionId(getCookie().token, match.params.hotelId)
 
@@ -70,12 +90,45 @@ const ViewHotelPage = ({ match, history }) => {
             <br />
             <b>{hotel.description}</b>
             <p className='alert alert-info mt-3'>€{hotel.price}</p>
-            <p className='card-text'>
+            <div className='card-text'>
               <span className='text-primary'>
                 for {diffDays(hotel.from, hotel.to)}{' '}
                 {diffDays(hotel.from, hotel.to) <= 1 ? ' day' : ' days'}
               </span>
-            </p>
+
+              <div className='d-flex align-items-center'>
+                <Card
+                  className='w-25 m-2 mr-5 d-flex justify-content-center align-items-center'
+                  style={{ maxHeight: '75px' }}
+                >
+                  <RatingModal>
+                    <StarRating
+                      name={hotel._id}
+                      numberOfStars={5}
+                      rating={star}
+                      changeRating={(newRating, name) => {
+                        setStar(newRating)
+                        hotelStar(name, newRating, getCookie().token).then(
+                          (resp) => {
+                            console.log('rating clicked', resp.data)
+                            loadHotel()
+                          }
+                        )
+                      }}
+                      isSelectable={true}
+                      starRatedColor='orange'
+                      starHoverColor='orange'
+                    />
+                  </RatingModal>
+                </Card>
+
+                {hotel && hotel.ratings && hotel.ratings.length > 0 ? (
+                  showAverage(hotel)
+                ) : (
+                  <div className='text-danger pt-1 pb-3'>No ratings yet</div>
+                )}
+              </div>
+            </div>
             <div className='d-flex'>
               <p className='mr-5'>
                 From <br />{' '}

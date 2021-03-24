@@ -23,9 +23,14 @@ const LoginPage = ({ history }) => {
 
   const informParent = (resp) => {
     authenticate(resp, () => {
-      isAuthenticated() && isAuthenticated().role === 'admin'
-        ? history.push('/admin')
-        : history.push('/user/dashboard')
+      const intended = history.location.state
+      if (intended) {
+        history.push(intended.from)
+      } else {
+        isAuthenticated() && isAuthenticated().role === 'admin'
+          ? history.push('/admin')
+          : history.push('/user/dashboard')
+      }
     })
   }
 
@@ -38,19 +43,22 @@ const LoginPage = ({ history }) => {
       data: { email, password },
     })
       .then((resp) => {
-        console.log('Sign in successful!', resp)
-
         authenticate(resp, () => {
-          setUserInfo({
-            ...userInfo,
-            name: '',
-            email: '',
-            password: '',
-            buttonText: 'Submitted',
-          })
-          isAuthenticated() && isAuthenticated().role === 'admin'
-            ? history.push('/admin')
-            : history.push('/user/dashboard')
+          const intended = history.location.state
+          if (intended) {
+            history.push(intended.from)
+          } else {
+            setUserInfo({
+              ...userInfo,
+              name: '',
+              email: '',
+              password: '',
+              buttonText: 'Submitted',
+            })
+            isAuthenticated() &&
+              isAuthenticated().role === 'admin' &&
+              history.push('/user/dashboard')
+          }
         })
       })
       .catch((err) => {

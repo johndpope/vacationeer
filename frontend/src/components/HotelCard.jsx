@@ -2,6 +2,7 @@ import { currencyFormatter } from '../actions/stripeActions'
 import { diffDays } from '../actions/hotelActions'
 import { Link, useHistory } from 'react-router-dom'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { showAverage } from './Rating'
 
 const HotelCard = ({
   hotel,
@@ -46,6 +47,11 @@ const HotelCard = ({
               1,
               200
             )}...`}</p>
+            {hotel && hotel.ratings && hotel.ratings.length > 0 ? (
+              showAverage(hotel)
+            ) : (
+              <div className='text-danger pt-1 pb-3'>No ratings yet</div>
+            )}
             <p className='card-text'>
               <span className='text-primary'>
                 for {diffDays(hotel.from, hotel.to)}{' '}
