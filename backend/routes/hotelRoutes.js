@@ -14,12 +14,14 @@ const {
 	userHotelBookings,
 	isAlreadyBooked,
 	searchListings,
-	hotelStar
+	hotelStar,
+	hotelsCount
 } = require('../controllers/hotelControllers')
 const { requireUserInfo } = require('../controllers/authenticationControllers')
 
 router.post('/add-hotel', requireUserInfo, formidable(), create)
-router.get('/hotels', hotels)
+router.post('/hotels', hotels)
+router.get("/hotels/total", hotelsCount);
 router.get('/hotel/image/:id', image)
 router.get('/hotels/seller', requireUserInfo, hotelsSeller)
 router.delete('/delete-hotel/:hotelId', requireUserInfo, hotelOwner, remove)

@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { loadAllHotels } from '../actions/hotelActions'
+import { getHotelsCount, loadAllHotels } from '../actions/hotelActions'
 import HotelCard from '../components/HotelCard'
 import Layout from '../components/Layout'
 import SearchForm from '../components/SearchForm'
+import { Pagination } from 'antd'
 
 const HomePage = () => {
   const [hotels, setHotels] = useState([])
+  const [page, setPage] = useState(1)
+  const [hotelsCount, setHotelsCount] = useState(0)
 
   useEffect(() => {
     importAllHotels()
+  }, [page])
+
+  useEffect(() => {
+    getHotelsCount().then((resp) => setHotelsCount(resp.data))
   }, [])
 
   const importAllHotels = async () => {
-    const resp = await loadAllHotels()
+    const resp = await loadAllHotels(page)
     setHotels(resp.data)
   }
   return (
@@ -29,6 +36,15 @@ const HomePage = () => {
         {hotels.map((hotel) => (
           <HotelCard key={hotel._id} hotel={hotel} />
         ))}
+      </div>
+      <div className='row'>
+        <nav className='col-md-4 offset-md-4 text-center pt-2 p-3'>
+          <Pagination
+            current={page}
+            total={(hotelsCount / 8) * 10}
+            onChange={(value) => setPage(value)}
+          />
+        </nav>
       </div>
     </Layout>
   )

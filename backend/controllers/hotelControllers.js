@@ -32,14 +32,49 @@ export const create = async (req, res) => {
   }
 }
 
+// export const hotels = async (req, res) => {
+//   const allHotels = await Hotel.find({ from: { $gte: new Date() } })
+//     .limit(24)
+//     .select('-image.data')
+//     .populate('postedBy', '_id name')
+//     .exec()
+//   res.json(allHotels)
+// }
+
 export const hotels = async (req, res) => {
-  const allHotels = await Hotel.find({ from: { $gte: new Date() } })
-    .limit(24)
+  const { page } = req.body
+  const currentPage = page || 1
+  const perPage = 8
+  const allHotels = await Hotel.find({   })
+    .skip((currentPage - 1) * perPage)
+    .limit(perPage)
     .select('-image.data')
     .populate('postedBy', '_id name')
     .exec()
   res.json(allHotels)
 }
+
+// exports.list = async (req, res) => {
+//   // console.table(req.body);
+//   try {
+//     // createdAt/updatedAt, desc/asc, 3
+//     const { sort, order, page } = req.body;
+//     const currentPage = page || 1;
+//     const perPage = 3; // 3
+
+//     const products = await Product.find({})
+//       .skip((currentPage - 1) * perPage)
+//       .populate("category")
+//       .populate("subs")
+//       .sort([[sort, order]])
+//       .limit(perPage)
+//       .exec();
+
+//     res.json(products);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 export const image = async (req, res) => {
   const hotel = await Hotel.findById(req.params.id).exec()
@@ -152,25 +187,27 @@ export const searchListings = async (req, res) => {
 
   //  more specific
   //  let result = await Listing.find({
-	// from: { $gte: new Date() },
-	// to: { $lte: to },
-	// location,
-	// bed,
+  // from: { $gte: new Date() },
+  // to: { $lte: to },
+  // location,
+  // bed,
   // })
-  
+}
+
+export const hotelsCount = async (req, res) => {
+  let total = await Hotel.find({}).estimatedDocumentCount().exec()
+  res.json(total)
 }
 
 export const hotelStar = async (req, res) => {
-  const hotel = await Hotel.findById(req.params.hotelId).exec();
-  const user = await 	User.findOne({ _id: req.user._id }).exec();
-  const { star } = req.body;
-
-  
+  const hotel = await Hotel.findById(req.params.hotelId).exec()
+  const user = await User.findOne({ _id: req.user._id }).exec()
+  const { star } = req.body
 
   const existingRatingObject = hotel.ratings.find(
     (ele) => ele.postedBy.toString() === user._id.toString()
-  );
-  
+  )
+
   if (existingRatingObject === undefined) {
     const ratingAdded = await Hotel.findByIdAndUpdate(
       hotel._id,
@@ -178,18 +215,18 @@ export const hotelStar = async (req, res) => {
         $push: { ratings: { star, postedBy: user._id } },
       },
       { new: true }
-    ).exec();
-    console.log("ratingAdded", ratingAdded);
-    res.json(ratingAdded);
+    ).exec()
+    console.log('ratingAdded', ratingAdded)
+    res.json(ratingAdded)
   } else {
     const ratingUpdated = await Hotel.updateOne(
       {
         ratings: { $elemMatch: existingRatingObject },
       },
-      { $set: { "ratings.$.star": star } },
+      { $set: { 'ratings.$.star': star } },
       { new: true }
-    ).exec();
-    console.log("ratingUpdated", ratingUpdated);
-    res.json(ratingUpdated);
+    ).exec()
+    console.log('ratingUpdated', ratingUpdated)
+    res.json(ratingUpdated)
   }
-};
+}
