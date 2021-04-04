@@ -164,7 +164,7 @@ const ProfilePage = ({ history }) => {
         <DashboardNav />
       </div>
 
-      <div className='col-md-4 offset-md-4'>
+      <div className='col-md-4 offset-md-4 auth-form p-3'>
         <h4 className='lead p-4 text-center'>Update Profile</h4>
         {updateForm()}
       </div>

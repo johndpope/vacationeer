@@ -30,12 +30,12 @@ const DashboardPage = () => {
 
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-md-10'>
+          <div className='col-md-9'>
             <h2>Your Bookings</h2>
           </div>
 
           <div className='col-md-2'>
-            <Link to='/' className='btn btn-primary btn-raised'>
+            <Link to='/' className='btn btn-primary btn-raised browse-button'>
               Browse Hotels
             </Link>
           </div>

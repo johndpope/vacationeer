@@ -12,7 +12,7 @@ import { getSessionId } from '../actions/stripeActions'
 import { loadStripe } from '@stripe/stripe-js'
 import StarRating from 'react-star-ratings'
 import RatingModal from '../components/RatingModal'
-import { Card } from 'antd'
+import { Card, Button } from 'antd'
 import { showAverage } from '../components/Rating'
 
 const ViewHotelPage = ({ match, history }) => {
@@ -75,15 +75,25 @@ const ViewHotelPage = ({ match, history }) => {
 
   return (
     <Layout>
-      <div className='container-fluid p-5 text-center'>
-        <h2>{hotel.title}</h2>
+      <div className='container-fluid p-5'>
+        <h2 className='text-center'>{hotel.title}</h2>
+        <Button
+          className='btn btn-raised btn-primary'
+          onClick={() => history.goBack()}
+        >
+          Go Back
+        </Button>
       </div>
 
       <div className='container-fluid'>
         <div className='row'>
           <div className='col-md-6'>
             <br />
-            <img src={image} alt={hotel.title} className='img img-fluid m-2' />
+            <img
+              src={image}
+              alt={hotel.title}
+              className='img img-fluid m-2 hotel-img'
+            />
           </div>
 
           <div className='col-md-6'>
@@ -110,7 +120,6 @@ const ViewHotelPage = ({ match, history }) => {
                         setStar(newRating)
                         hotelStar(name, newRating, getCookie().token).then(
                           (resp) => {
-                            console.log('rating clicked', resp.data)
                             loadHotel()
                           }
                         )

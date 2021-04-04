@@ -21,7 +21,7 @@ const SearchForm = () => {
   }
 
   return (
-    <div className='d-flex pb-4'>
+    <div className='d-flex pb-4 search-form'>
       <div
         className='w-100'
         value={location}

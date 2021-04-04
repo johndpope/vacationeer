@@ -34,7 +34,7 @@ const HotelCard = ({
           <div className='card-body'>
             <h3 className='card-title'>
               {hotel.title}{' '}
-              <span className='float-right'>
+              <span className='float-right hotel-price'>
                 {currencyFormatter({
                   amount: hotel.price * 100,
                   currency: 'eur',

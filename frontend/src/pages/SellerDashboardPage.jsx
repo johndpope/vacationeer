@@ -125,17 +125,20 @@ const SellerDashboardPage = () => {
 
       {isAuthenticated() &&
       isAuthenticated().stripe_seller &&
-      isAuthenticated().stripe_seller.charges_enabled
-        ? stripeLinked()
-        : stripeUnLinked()}
-
-      <nav className='col-md-4 offset-md-4 text-center pt-2 p-3'>
-        <Pagination
-          current={page}
-          total={(hotelsCount / 6) * 10}
-          onChange={(value) => setPage(value)}
-        />
-      </nav>
+      isAuthenticated().stripe_seller.charges_enabled ? (
+        <>
+          {stripeLinked()}
+          <nav className='col-md-4 offset-md-4 text-center pt-2 p-3'>
+            <Pagination
+              current={page}
+              total={(hotelsCount / 6) * 10}
+              onChange={(value) => setPage(value)}
+            />
+          </nav>
+        </>
+      ) : (
+        stripeUnLinked()
+      )}
     </Layout>
   )
 }

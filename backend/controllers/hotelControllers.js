@@ -44,7 +44,7 @@ export const create = async (req, res) => {
 export const hotels = async (req, res) => {
   const { page } = req.body
   const currentPage = page || 1
-  const perPage = 6
+  const perPage = 15
   const allHotels = await Hotel.find({ from: { $gte: new Date() } })
     .skip((currentPage - 1) * perPage)
     .limit(perPage)
@@ -177,11 +177,8 @@ export const isAlreadyBooked = async (req, res) => {
   })
 }
 
-export const searchListings = async (req, res) => {
-  const { location, date, bed } = req.body
-
+const handleSearch = async (req, res, location, date) => {
   const fromDate = date.split(',')
-
   const result = await Hotel.find({
     from: { $gte: new Date(fromDate[0]) },
     location,
@@ -191,13 +188,78 @@ export const searchListings = async (req, res) => {
 
   res.json(result)
 
-  //  more specific
-  //  let result = await Listing.find({
-  // from: { $gte: new Date() },
-  // to: { $lte: to },
-  // location,
-  // bed,
+  //more specific search but not enough hotels for this to give a good user experience
+  // const result = await Hotel.find({
+  //   from: { $gte: new Date() },
+  //   to: { $lte: date.to },
+  //   location,
+  //   bed,
   // })
+  //   .select('-image.data')
+  //   .exec()
+
+  // res.json(result)
+}
+
+const handlePrice = async (req, res, price) => {
+  try {
+    let hotels = await Hotel.find({
+      price: {
+        $gte: price[0],
+        $lte: price[1],
+      },
+    })
+      .limit(15)
+      .select('-image.data')
+      .populate('postedBy', '_id name')
+      .exec()
+
+    res.json(hotels)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const handleStar = (req, res, stars) => {
+  Hotel.aggregate([
+    {
+      $project: {
+        document: '$$ROOT',
+        floorAverage: {
+          $floor: { $avg: '$ratings.star' },
+        },
+      },
+    },
+    { $match: { floorAverage: stars } },
+  ])
+    .limit(15)
+    .exec((err, aggregates) => {
+      if (err) console.log('AGGREGATE ERROR', err)
+      Hotel.find({ _id: aggregates })
+        .select('-image.data')
+        .populate('postedBy', '_id name')
+        .exec((error, hotels) => {
+          if (error) console.log('HOTEL AGGREGATE ERROR', error)
+          res.json(hotels)
+        })
+    })
+}
+
+export const searchFilters = async (req, res) => {
+  const { location, date, bed, price, stars } = req.body
+
+  if (location || date || bed) {
+    await handleSearch(req, res, location, date)
+  }
+
+  if (price !== undefined) {
+    await handlePrice(req, res, price)
+  }
+
+  if (stars) {
+    console.log(stars)
+    await handleStar(req, res, stars)
+  }
 }
 
 export const hotelsCount = async (req, res) => {
