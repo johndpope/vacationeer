@@ -42,8 +42,10 @@ const HomePage = () => {
   }, [ok])
 
   const importAllHotels = async () => {
+    setLoading(true)
     const resp = await loadAllHotels(page)
     setHotels(resp.data)
+    setLoading(false)
   }
 
   const handleSlider = (value) => {

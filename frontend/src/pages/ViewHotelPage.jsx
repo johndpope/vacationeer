@@ -14,11 +14,13 @@ import StarRating from 'react-star-ratings'
 import RatingModal from '../components/RatingModal'
 import { Card, Button } from 'antd'
 import { showAverage } from '../components/Rating'
+import { LoadingOutlined } from '@ant-design/icons'
 
 const ViewHotelPage = ({ match, history }) => {
   const [hotel, setHotel] = useState({})
   const [image, setImage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [buffering, setBuffering] = useState(false)
   const [alreadyBooked, setAlreadyBooked] = useState(false)
   const [star, setStar] = useState(0)
 
@@ -46,9 +48,11 @@ const ViewHotelPage = ({ match, history }) => {
   }, [])
 
   const loadHotel = async () => {
+    setBuffering(true)
     const resp = await read(match.params.hotelId)
     setHotel(resp.data)
     setImage(`${process.env.REACT_APP_API}/hotel/image/${resp.data._id}`)
+    setBuffering(false)
   }
 
   const handleClick = async (e) => {
@@ -66,106 +70,117 @@ const ViewHotelPage = ({ match, history }) => {
 
     const stripe = await loadStripe(process.env.REACT_APP_STRIPE_KEY)
 
-    stripe
-      .redirectToCheckout({
-        sessionId: resp.data.sessionId,
-      })
-      .then((result) => console.log(result))
+    stripe.redirectToCheckout({
+      sessionId: resp.data.sessionId,
+    })
   }
 
   return (
     <Layout>
-      <div className='container-fluid p-5'>
-        <h2 className='text-center'>{hotel.title}</h2>
-        <Button
-          className='btn btn-raised btn-primary'
-          onClick={() => history.goBack()}
-        >
-          Go Back
-        </Button>
-      </div>
-
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='col-md-6'>
-            <br />
+      {buffering && (
+        <div className='text-center mt-5'>
+          <LoadingOutlined className='display-1 text-primary mt-5' />
+        </div>
+      )}
+      {!buffering && (
+        <div className='container-fluid p-5'>
+          <h2 className='text-center secondary-heading'>
+            <span>{hotel.title}</span>
+          </h2>
+          <Button
+            className='btn btn-raised btn-primary back-button'
+            onClick={() => history.goBack()}
+          >
+            Go Back
+          </Button>
+          <div className='d-flex justify-content-center'>
             <img
               src={image}
               alt={hotel.title}
-              className='img img-fluid m-2 hotel-img'
+              className='img img-fluid intro w-100 m-2 hotel-img mb-5 mt-5'
             />
           </div>
+        </div>
+      )}
 
-          <div className='col-md-6'>
-            <br />
-            <b>{hotel.description}</b>
-            <p className='alert alert-info mt-3'>€{hotel.price}</p>
-            <div className='card-text'>
-              <span className='text-primary'>
-                for {diffDays(hotel.from, hotel.to)}{' '}
-                {diffDays(hotel.from, hotel.to) <= 1 ? ' day' : ' days'}
-              </span>
+      {!buffering && (
+        <div className='container-fluid'>
+          <div className='row'>
+            <div className='col-md-6 offset-md-3  mb-5 text-center'>
+              <br />
+              <b className='hotel-description'>{hotel.description}</b>
+              <h4 className='alert alert-info mt-5 mb-5'>€{hotel.price}</h4>
+              <div className='card-text'>
+                <span className='text-primary h5'>
+                  for {diffDays(hotel.from, hotel.to)}{' '}
+                  {diffDays(hotel.from, hotel.to) <= 1 ? ' day' : ' days'}
+                </span>
 
-              <div className='d-flex align-items-center'>
-                <Card
-                  className='w-25 m-2 mr-5 d-flex justify-content-center align-items-center'
-                  style={{ maxHeight: '75px' }}
-                >
-                  <RatingModal>
-                    <StarRating
-                      name={hotel._id}
-                      numberOfStars={5}
-                      rating={star}
-                      changeRating={(newRating, name) => {
-                        setStar(newRating)
-                        hotelStar(name, newRating, getCookie().token).then(
-                          (resp) => {
-                            loadHotel()
-                          }
-                        )
-                      }}
-                      isSelectable={true}
-                      starRatedColor='orange'
-                      starHoverColor='orange'
-                    />
-                  </RatingModal>
-                </Card>
+                <div className='d-flex align-items-center justify-content-center m-5'>
+                  <Card
+                    className='w-25 m-2 mr-5 d-flex justify-content-center align-items-center'
+                    style={{ maxHeight: '75px' }}
+                  >
+                    <RatingModal>
+                      <StarRating
+                        name={hotel._id}
+                        numberOfStars={5}
+                        rating={star}
+                        changeRating={(newRating, name) => {
+                          setStar(newRating)
+                          hotelStar(name, newRating, getCookie().token).then(
+                            (resp) => {
+                              loadHotel()
+                            }
+                          )
+                        }}
+                        isSelectable={true}
+                        starRatedColor='orange'
+                        starHoverColor='orange'
+                      />
+                    </RatingModal>
+                  </Card>
 
-                {hotel && hotel.ratings && hotel.ratings.length > 0 ? (
-                  showAverage(hotel)
-                ) : (
-                  <div className='text-danger pt-1 pb-3'>No ratings yet</div>
-                )}
+                  {hotel && hotel.ratings && hotel.ratings.length > 0 ? (
+                    showAverage(hotel)
+                  ) : (
+                    <div className='text-danger pt-1 pb-3'>No ratings yet</div>
+                  )}
+                </div>
+              </div>
+              <div className='d-flex justify-content-center'>
+                <p className='mr-5'>
+                  From <br />{' '}
+                  {moment(new Date(hotel.from)).format(
+                    'MMMM Do YYYY, h:mm:ss a'
+                  )}
+                </p>
+                <p>
+                  To <br />{' '}
+                  {moment(new Date(hotel.to)).format('MMMM Do YYYY, h:mm:ss a')}
+                </p>
+              </div>
+
+              <button
+                onClick={handleClick}
+                className='btn btn-lg btn-primary mt-5 btn-raised'
+                disabled={loading || alreadyBooked}
+              >
+                {loading
+                  ? 'Loading...'
+                  : alreadyBooked
+                  ? 'Already Booked'
+                  : isAuthenticated() && getCookie().token
+                  ? 'Book Now'
+                  : 'Log in to proceed with booking'}
+              </button>
+              <div className='m-5'>
+                <i>Posted by {hotel.postedBy && hotel.postedBy.name}</i>
               </div>
             </div>
-            <div className='d-flex'>
-              <p className='mr-5'>
-                From <br />{' '}
-                {moment(new Date(hotel.from)).format('MMMM Do YYYY, h:mm:ss a')}
-              </p>
-              <p>
-                To <br />{' '}
-                {moment(new Date(hotel.to)).format('MMMM Do YYYY, h:mm:ss a')}
-              </p>
-            </div>
-            <i>Posted by {hotel.postedBy && hotel.postedBy.name}</i>
-            <br />
-            <button
-              onClick={handleClick}
-              className='btn btn-lg btn-primary mt-3 btn-raised'
-              disabled={loading || alreadyBooked}
-            >
-              {loading
-                ? 'Loading...'
-                : alreadyBooked
-                ? 'Already Booked'
-                : isAuthenticated() && getCookie().token
-                ? 'Book Now'
-                : 'Log in to proceed with booking'}
-            </button>
           </div>
         </div>
-      </div>
+      )}
     </Layout>
   )
 }

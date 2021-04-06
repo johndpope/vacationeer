@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { stripeSuccessRequest } from '../actions/stripeActions'
 import { getCookie } from '../components/HelperFunctions'
 import { LoadingOutlined } from '@ant-design/icons'
+import { toast } from 'react-toastify'
 
 const StripeSuccessPage = ({ match, history }) => {
   const hotelId = match.params.hotelId
@@ -10,8 +11,10 @@ const StripeSuccessPage = ({ match, history }) => {
     stripeSuccessRequest(getCookie().token, hotelId).then((resp) => {
       if (resp.data.success) {
         history.push('/user/dashboard')
+        toast.success('Payment Successful!')
       } else {
         history.push('/stripe/cancel')
+        toast.error('Unable to process payment')
       }
     })
   }, [hotelId])

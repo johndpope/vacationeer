@@ -54,27 +54,6 @@ export const hotels = async (req, res) => {
   res.json(allHotels)
 }
 
-// exports.list = async (req, res) => {
-//   // console.table(req.body);
-//   try {
-//     // createdAt/updatedAt, desc/asc, 3
-//     const { sort, order, page } = req.body;
-//     const currentPage = page || 1;
-//     const perPage = 3; // 3
-
-//     const products = await Product.find({})
-//       .skip((currentPage - 1) * perPage)
-//       .populate("category")
-//       .populate("subs")
-//       .sort([[sort, order]])
-//       .limit(perPage)
-//       .exec();
-
-//     res.json(products);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 export const image = async (req, res) => {
   const hotel = await Hotel.findById(req.params.id).exec()

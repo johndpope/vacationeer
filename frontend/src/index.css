@@ -26,6 +26,25 @@ input[type='range'] {
   border: 0.2px solid #010101;
 } */
 
+.intro {
+  border-radius: 10px;
+}
+
+.secondary-heading {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+.secondary-heading span {
+  padding: 1rem 1.5rem;
+  background-image: linear-gradient(
+    to bottom right,
+    rgba(111, 155, 213, 0.85),
+    rgba(40, 77, 180, 0.85)
+  );
+}
+
 .active {
   background-color: rgb(34, 119, 255) !important;
   color: #fff !important;
@@ -126,6 +145,15 @@ input[type='range'] {
   .browse-button {
     margin-bottom: 3rem;
   }
+
+  .secondary-heading {
+    margin-bottom: 3rem;
+    font-size: 1.4rem;
+  }
+
+  .back-button {
+    margin-bottom: 3rem;
+  }
 }
 
 @media (max-width: 700px) {
@@ -138,5 +166,27 @@ input[type='range'] {
   .card-title {
     display: flex;
     flex-direction: column;
+  }
+
+  .hotel-description {
+    font-size: 0.7rem;
+  }
+
+  .secondary-heading {
+    font-size: 1rem;
+  }
+
+  .nav-tabs .nav-link {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 330px) {
+  .secondary-heading {
+    font-size: 0.7rem;
+  }
+
+  .nav-tabs .nav-link {
+    font-size: 0.5rem;
   }
 }

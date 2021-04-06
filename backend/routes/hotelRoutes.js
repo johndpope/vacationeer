@@ -16,7 +16,7 @@ const {
 	hotelStar,
 	hotelsCount,
 	searchFilters,
-	hotelsFilteredCount
+
 } = require('../controllers/hotelControllers')
 const { requireUserInfo } = require('../controllers/authenticationControllers')
 
