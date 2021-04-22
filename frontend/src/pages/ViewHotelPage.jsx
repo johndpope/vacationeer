@@ -106,16 +106,19 @@ const ViewHotelPage = ({ match, history }) => {
       {!buffering && (
         <div className='container-fluid'>
           <div className='row'>
-            <div className='col-md-6 offset-md-3  mb-5 text-center'>
+            <div className='col-md-6 offset-md-3 mb-5'>
               <br />
               <b className='hotel-description'>{hotel.description}</b>
-              <h4 className='alert alert-info mt-5 mb-5'>€{hotel.price}</h4>
-              <div className='card-text'>
-                <span className='text-primary h5'>
-                  for {diffDays(hotel.from, hotel.to)}{' '}
-                  {diffDays(hotel.from, hotel.to) <= 1 ? ' day' : ' days'}
-                </span>
 
+              <div className='text-center'>
+                <h4 className='alert alert-info mt-5 mb-5'>€{hotel.price}</h4>
+
+                <div className='card-text'>
+                  <span className='text-primary h5'>
+                    for {diffDays(hotel.from, hotel.to)}{' '}
+                    {diffDays(hotel.from, hotel.to) <= 1 ? ' day' : ' days'}
+                  </span>
+                </div>
                 <div className='d-flex align-items-center justify-content-center m-5'>
                   <Card
                     className='w-25 m-2 mr-5 d-flex justify-content-center align-items-center'
@@ -161,21 +164,23 @@ const ViewHotelPage = ({ match, history }) => {
                 </p>
               </div>
 
-              <button
-                onClick={handleClick}
-                className='btn btn-lg btn-primary mt-5 btn-raised'
-                disabled={loading || alreadyBooked}
-              >
-                {loading
-                  ? 'Loading...'
-                  : alreadyBooked
-                  ? 'Already Booked'
-                  : isAuthenticated() && getCookie().token
-                  ? 'Book Now'
-                  : 'Log in to proceed with booking'}
-              </button>
-              <div className='m-5'>
-                <i>Posted by {hotel.postedBy && hotel.postedBy.name}</i>
+              <div className='text-center'>
+                <button
+                  onClick={handleClick}
+                  className='btn btn-lg btn-primary mt-5 btn-raised'
+                  disabled={loading || alreadyBooked}
+                >
+                  {loading
+                    ? 'Loading...'
+                    : alreadyBooked
+                    ? 'Already Booked'
+                    : isAuthenticated() && getCookie().token
+                    ? 'Book Now'
+                    : 'Log in to proceed with booking'}
+                </button>
+                <div className='m-5'>
+                  <i>Posted by {hotel.postedBy && hotel.postedBy.name}</i>
+                </div>
               </div>
             </div>
           </div>
