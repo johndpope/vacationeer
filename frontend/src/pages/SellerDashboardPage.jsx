@@ -24,6 +24,7 @@ const SellerDashboardPage = () => {
 
   useEffect(() => {
     loadSellersHotels()
+    // eslint-disable-next-line
   }, [page])
 
   useEffect(() => {

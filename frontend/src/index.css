@@ -137,6 +137,11 @@ input[type='range'] {
   color: white;
 }
 
+.hotel-img {
+  object-fit: cover;
+  width: auto;
+}
+
 @media (max-width: 767px) {
   .hotel-img {
     margin: 0 !important;

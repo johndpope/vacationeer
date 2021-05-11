@@ -10,6 +10,7 @@ import { getAccountStatus } from '../actions/stripeActions'
 const StripeCallbackPage = ({ history }) => {
   useEffect(() => {
     if (isAuthenticated() && getCookie().token) accountStatus()
+    // eslint-disable-next-line
   }, [isAuthenticated()])
 
   const accountStatus = async () => {

@@ -10,6 +10,7 @@ const OrderModal = ({ session, orderedBy, showModal, setShowModal }) => {
       onOk={() => {
         setShowModal(!showModal)
       }}
+      // eslint-disable-next-line
       onCancel={() => setShowModal(!showModal)}
     >
       <p>Payment Intent: {session.payment_intent}</p>

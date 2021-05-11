@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { stripeSuccessRequest } from '../actions/stripeActions'
 import { getCookie } from '../components/HelperFunctions'
 import { LoadingOutlined } from '@ant-design/icons'
@@ -17,7 +17,7 @@ const StripeSuccessPage = ({ match, history }) => {
         toast.error('Unable to process payment')
       }
     })
-  }, [hotelId])
+  }, [hotelId, history])
 
   return (
     <div className='container'>

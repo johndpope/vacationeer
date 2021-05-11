@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Select } from 'antd'
 import { getCookie } from '../components/HelperFunctions'
 import { editHotel, read } from '../actions/hotelActions'
 import { toast } from 'react-toastify'
 import EditHotelForm from '../components/EditHotelForm'
 import Layout from '../components/Layout'
-
-const { Option } = Select
 
 const EditHotelPage = ({ history, match }) => {
   const [information, setInformation] = useState({
@@ -29,6 +26,7 @@ const EditHotelPage = ({ history, match }) => {
 
   useEffect(() => {
     loadHotel()
+    // eslint-disable-next-line
   }, [])
 
   const loadHotel = async () => {
@@ -52,11 +50,7 @@ const EditHotelPage = ({ history, match }) => {
     hotelInfo.append('bed', bed)
 
     try {
-      const resp = await editHotel(
-        getCookie().token,
-        hotelInfo,
-        match.params.hotelId
-      )
+      await editHotel(getCookie().token, hotelInfo, match.params.hotelId)
       toast.success('Hotel successfully updated!')
 
       setTimeout(() => {
@@ -95,11 +89,7 @@ const EditHotelPage = ({ history, match }) => {
             />
           </div>
           <div className='col-md-2'>
-            <img
-              src={preview}
-              alt='preview-image'
-              className='img img-fluid m-2'
-            />
+            <img src={preview} alt='preview-hotel' className='img img-fluid m-2' />
           </div>
         </div>
       </div>

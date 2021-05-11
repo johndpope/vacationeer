@@ -19,11 +19,13 @@ const HomePage = () => {
   const [hotelsCount, setHotelsCount] = useState(0)
   const [price, setPrice] = useState([0, 0])
   const [ok, setOk] = useState(false)
+  // eslint-disable-next-line
   const [star, setStar] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     importAllHotels()
+    // eslint-disable-next-line
   }, [page])
 
   useEffect(() => {
@@ -39,6 +41,7 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchHotels({ price })
+    // eslint-disable-next-line
   }, [ok])
 
   const importAllHotels = async () => {

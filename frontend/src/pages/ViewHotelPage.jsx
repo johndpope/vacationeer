@@ -28,8 +28,10 @@ const ViewHotelPage = ({ match, history }) => {
 
   useEffect(() => {
     loadHotel()
+    // eslint-disable-next-line
   }, [])
 
+  // eslint-disable-next-line
   useEffect(() => {
     if (hotel.ratings && isAuthenticated()) {
       let existingRatingObject = hotel.ratings.find(
@@ -45,7 +47,7 @@ const ViewHotelPage = ({ match, history }) => {
         if (resp.data.ok) setAlreadyBooked(true)
       })
     }
-  }, [])
+  }, [hotelId])
 
   const loadHotel = async () => {
     setBuffering(true)

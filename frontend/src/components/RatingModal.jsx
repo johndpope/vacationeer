@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Modal, Button } from 'antd'
+import { Modal } from 'antd'
 import { toast } from 'react-toastify'
 import { isAuthenticated, getCookie } from './HelperFunctions'
 import { StarOutlined } from '@ant-design/icons'

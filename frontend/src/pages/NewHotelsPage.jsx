@@ -1,11 +1,8 @@
 import { useState } from 'react'
-import { Select } from 'antd'
 import { getCookie } from '../components/HelperFunctions'
 import { createHotel } from '../actions/hotelActions'
 import { toast } from 'react-toastify'
 import CreateHotelForm from '../components/CreateHotelForm'
-
-const { Option } = Select
 
 const NewHotelsPage = ({ history }) => {
   const [information, setInformation] = useState({
@@ -23,16 +20,8 @@ const NewHotelsPage = ({ history }) => {
     'https://via.placeholder.com/100x100.png?text=PREVIEW'
   )
 
-  const {
-    title,
-    description,
-    image,
-    location,
-    price,
-    from,
-    to,
-    bed,
-  } = information
+  const { title, description, image, location, price, from, to, bed } =
+    information
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -49,7 +38,7 @@ const NewHotelsPage = ({ history }) => {
     hotelInfo.append('bed', bed)
 
     try {
-      const resp = await createHotel(getCookie().token, hotelInfo)
+      await createHotel(getCookie().token, hotelInfo)
 
       toast.success('Hotel successfully added!')
 
@@ -91,7 +80,7 @@ const NewHotelsPage = ({ history }) => {
           <div className='col-md-2'>
             <img
               src={preview}
-              alt='preview-image'
+              alt='preview-hotel'
               className='img img-fluid m-2'
             />
           </div>

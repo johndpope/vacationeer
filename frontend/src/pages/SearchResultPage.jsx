@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react'
 import queryString from 'query-string'
-import { Link } from 'react-router-dom'
 import SearchForm from '../components/SearchForm'
 import { searchListings } from '../actions/hotelActions'
 import HotelCard from '../components/HotelCard'
 
 const SearchResultPage = () => {
-  const [searchLocation, setSearchLocation] = useState('')
-  const [searchDate, setSearchDate] = useState('')
-  const [searchBed, setSearchBed] = useState('')
   const [hotels, setHotels] = useState([])
 
   useEffect(() => {
@@ -16,6 +12,7 @@ const SearchResultPage = () => {
     searchListings({ location, date, bed }).then((resp) => {
       setHotels(resp.data)
     })
+    // eslint-disable-next-line
   }, [window.location.search])
 
   return (
