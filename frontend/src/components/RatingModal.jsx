@@ -24,7 +24,7 @@ const RatingModal = ({ children }) => {
   return (
     <>
       <div className='pointer' onClick={handleModal}>
-        <StarOutlined className='star-color mb-2 d-flex justify-content-center' />{' '}
+        <StarOutlined className='star-color mb-2 d-flex justify-content-center' />
         {isAuthenticated() ? 'Leave rating' : 'Login to leave rating'}
       </div>
 

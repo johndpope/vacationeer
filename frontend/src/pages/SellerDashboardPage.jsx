@@ -63,7 +63,10 @@ const SellerDashboardPage = () => {
         </div>
 
         <div className='col-md-2'>
-          <Link to='/hotels/new' className='btn btn-primary btn-raised'>
+          <Link
+            to='/hotels/new'
+            className='btn btn-primary btn-raised browse-button'
+          >
             + Add New
           </Link>
         </div>

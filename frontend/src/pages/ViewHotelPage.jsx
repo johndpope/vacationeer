@@ -120,10 +120,7 @@ const ViewHotelPage = ({ match, history }) => {
                   </span>
                 </div>
                 <div className='d-flex align-items-center justify-content-center m-5'>
-                  <Card
-                    className='w-25 m-2 mr-5 d-flex justify-content-center align-items-center'
-                    style={{ maxHeight: '75px' }}
-                  >
+                  <Card className='w-25 m-2 mr-5 d-flex justify-content-center align-items-center'>
                     <RatingModal>
                       <StarRating
                         name={hotel._id}
@@ -167,7 +164,7 @@ const ViewHotelPage = ({ match, history }) => {
               <div className='text-center'>
                 <button
                   onClick={handleClick}
-                  className='btn btn-lg btn-primary mt-5 btn-raised'
+                  className='btn btn-primary mt-5 btn-raised'
                   disabled={loading || alreadyBooked}
                 >
                   {loading

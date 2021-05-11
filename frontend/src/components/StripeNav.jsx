@@ -49,7 +49,7 @@ const StripeNav = () => {
           <LoadingOutlined className='display-1 text-primary' />
         </div>
       ) : (
-        <div className='d-flex justify-content-around'>
+        <div className='d-flex justify-content-around stripenav'>
           <Card>
             <Meta
               avatar={<Avatar>{isAuthenticated().name[0]}</Avatar>}

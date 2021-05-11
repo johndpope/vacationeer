@@ -160,6 +160,14 @@ input[type='range'] {
   .search-form {
     flex-direction: column;
   }
+
+  .stripenav {
+    flex-direction: column;
+  }
+
+  .ant-card-bordered {
+    margin-bottom: 10px !important;
+  }
 }
 
 @media (max-width: 500px) {
@@ -168,12 +176,17 @@ input[type='range'] {
     flex-direction: column;
   }
 
+  .primary-heading {
+    font-size: 1.9rem;
+    letter-spacing: 2px;
+  }
+
   .hotel-description {
     font-size: 0.7rem;
   }
 
   .secondary-heading {
-    font-size: 1rem;
+    font-size: 0.7rem;
   }
 
   .nav-tabs .nav-link {
@@ -182,8 +195,8 @@ input[type='range'] {
 }
 
 @media (max-width: 330px) {
-  .secondary-heading {
-    font-size: 0.7rem;
+  .primary-heading {
+    font-size: 1.5rem;
   }
 
   .nav-tabs .nav-link {
