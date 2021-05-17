@@ -37,7 +37,7 @@ const ForgotPasswordPage = ({ history }) => {
   }
 
   const forgotPasswordForm = (e) => (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className='form-group pt-3'>
         <label className='text-muted'>Email</label>
         <input
@@ -53,7 +53,7 @@ const ForgotPasswordPage = ({ history }) => {
           disabled={
             buttonText === 'Requested' || buttonText === 'Submitting' || !email
           }
-          onClick={handleSubmit}
+          type='submit'
           className='btn btn-primary btn-raised mb-3'
         >
           {buttonText}
@@ -65,8 +65,12 @@ const ForgotPasswordPage = ({ history }) => {
   return (
     <Layout>
       <h1 className='p-5 text-center'>Forgot Password</h1>
-      <div className='col-md-4 offset-md-4 auth-form2'>
-        {forgotPasswordForm()}
+      <div className='container'>
+        <div className='row'>
+          <div className='col-md-6 offset-md-3 auth-form p-3'>
+            {forgotPasswordForm()}
+          </div>
+        </div>
       </div>
     </Layout>
   )

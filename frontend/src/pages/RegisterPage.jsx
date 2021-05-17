@@ -54,7 +54,7 @@ const RegisterPage = () => {
   }
 
   const registerForm = (e) => (
-    <form className='mt-5'>
+    <form className='mt-5' onSubmit={handleSubmit}>
       <div className='form-group'>
         <label className='text-muted'>Name</label>
         <input
@@ -110,7 +110,7 @@ const RegisterPage = () => {
             buttonText === 'Submitted' ||
             buttonText === 'Submitting'
           }
-          onClick={handleSubmit}
+          type='submit'
           className='btn btn-primary btn-raised mr-3'
         >
           {buttonText}

@@ -69,7 +69,7 @@ const LoginPage = ({ history }) => {
   }
 
   const loginForm = (e) => (
-    <form className='mt-5'>
+    <form className='mt-5' onSubmit={handleSubmit}>
       <div className='form-group'>
         <label className='text-muted'>Email</label>
         <input
@@ -93,7 +93,7 @@ const LoginPage = ({ history }) => {
       <div>
         <button
           disabled={!email || !password}
-          onClick={handleSubmit}
+          type='submit'
           className='btn btn-primary btn-raised mr-3'
         >
           {buttonText}

@@ -121,14 +121,6 @@ input[type='range'] {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.auth-form2 {
-  background-color: rgb(238, 238, 238);
-}
-
-.auth-form2:hover {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-}
-
 .star-color {
   color: orange !important;
 }
